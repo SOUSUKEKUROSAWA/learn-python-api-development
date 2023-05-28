@@ -7,7 +7,10 @@
 - source code
   - https://github.com/Sanjeev-Thiyagarajan/fastapi-course
 ## Course Intro
-## Course Project Overview
+- FastAPIを採用した理由
+  - API開発に特化したフレームワーク
+  - 非常に高速な実行速度と開発速度
+  - 自動ドキュメンテーション機能
 # Section 2: Setup & installation
 ## Mac Python Installation
 ## Mac VS Code install and setup
