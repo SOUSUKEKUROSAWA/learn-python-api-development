@@ -12,13 +12,22 @@
   - 非常に高速な実行速度と開発速度
   - 自動ドキュメンテーション機能
 # Section 2: Setup & installation
-## Mac Python Installation
-## Mac VS Code install and setup
-## Windows Python Installation
-## Windows VS Code install and setup
+## VS Code install and setup
+- pythonファイルを開くと自動でインタープリタが選択される
 ## Python virtual environment Basics
-## Virtual environment on windows
-## Virtual environment on Mac
+- https://chat.openai.com/share/4e11a886-4ee0-483b-acbf-d4f45df7ed28
+## Virtual environment on bash
+- bashを開く
+- `python -m venv venv`
+  - 仮想環境の作成
+- Ctrl + Shift + p
+- `select interpreter`
+- `.\venv\Scripts\python.exe`
+  - インタープリタの変更
+- `source venv/Scripts/activate`
+  - 仮想環境のアクティブ化
+- `deactivate`
+  - 仮想環境の非アクティブ化
 # Section 3: FastAPI
 ## Install dependencies w/ pip
 ## Starting Fast API
