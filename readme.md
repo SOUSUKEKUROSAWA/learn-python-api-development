@@ -29,12 +29,47 @@
 - `deactivate`
   - 仮想環境の非アクティブ化
 # Section 3: FastAPI
+- document
+  - https://fastapi.tiangolo.com/ja/
 ## Install dependencies w/ pip
+- `pip install fastapi[all]`
+- `pip freeze`
+  - インストールしたパッケージの一覧を表示
+  - venv\Libにパッケージに関する情報が格納されている
 ## Starting Fast API
+- `uvicorn <file name>:<application object name>`
+  - APIの実行
+    - localhost:8000をリッスンするサーバが立ち上がる
+  - ex.)
+    - `uvicorn main:app`
+      - main.pyのappを実行
 ## Path operations
+- pythonの辞書を返したとしてもFastAPIはそれをJSONに自動で変換する
+- デコレータを使用してメソッドのエンドポイントを規定できる
+- コードを書き換えてページをリロードしても変更が反映されない問題
+  - 原因
+    - `uvicorn main:app`コマンドはコードの変更を監視していないから
+  - 解決策
+    - `uvicorn main:app --reload`
 ## Path Operation Order(yes it matters)
-## Intro to Postman
+- 同じパスがあった場合，上に書かれている方が読み取られて，それ以降のものは無視される
 ## HTTP Post Requests
+- `Body(...)`
+  - リクエストボディからデータを取得する
+  - `...`
+    - PythonのEllipsisオブジェクト
+      - パラメータが必須であることを示す
+      - ex.)
+        - `def create_posts(payload: dict = Body(...)):`
+        - このコードでは`create_posts`関数がリクエストを受け取るとき、リクエストボディから`payload`という名前の辞書型のデータを必須として要求する
+        - リクエストボディが提供されない場合、FastAPIは自動的に`400 Bad Request`エラーを返す
+      - `Body(...)`の代わりにデフォルト値を設定することも可能
+        - ex.)
+          - `Body(None)`
+            - リクエストボディが提供されなかった場合でもエラーを返さず、`payload`の値は`None`になる
+- `__pycache__`ディレクトリとは
+  - Pythonがスクリプトを高速に実行するためのキャッシュが格納される
+  - gitignoreに含めるべきもの
 ## Schema Validation with Pydantic
 ## CRUD Operations
 ## storing posts in Array
