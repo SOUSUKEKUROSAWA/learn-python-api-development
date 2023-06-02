@@ -80,7 +80,6 @@
 - `Optional[int]`
   - Noneを許容するという意味
   - int型が入るが，NoneでもOKというカラムを定義する
-## CRUD Operations
 ## storing posts in Array
 ## creating posts
 ## Postman Collections & saving requests
