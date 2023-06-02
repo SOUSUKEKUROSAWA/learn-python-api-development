@@ -81,6 +81,7 @@
   - Noneを許容するという意味
   - int型が入るが，NoneでもOKというカラムを定義する
 ## storing posts in Array
+- 簡単のためにまずはメモリにデータを保存していく
 ## creating posts
 ## Postman Collections & saving requests
 ## Retrieve One Post
