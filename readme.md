@@ -84,8 +84,23 @@
 - 簡単のためにまずはメモリにデータを保存していく
 ## creating posts
 - postmanでCollectionを作成
-## Postman Collections & saving requests
 ## Retrieve One Post
+- 指定したIDのPostが見つからない問題
+  - 状況
+    - `/posts/1`にGETリクエストを送っても`{"result": null}`が返ってくる
+  - 原因
+    - idが文字列形式で渡されていたから
+      - パスパラメータで渡されるものは全て文字列として渡される
+  - 解決策
+    - 整数型で受け取る
+      - 引数の時点で制限することで関数内で変換処理を書く必要がなくなる
+```diff
+@app.get("/posts/{id}")
+- def get_post(id):
++ def get_post(id: int):
+    post = find_post(id)
+    return {"result": post}
+```
 ## Path order Matters
 ## Changing response Status Codes
 ## Deleting Posts

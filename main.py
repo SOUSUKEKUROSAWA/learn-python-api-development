@@ -23,17 +23,27 @@ my_posts = [
     },
 ]
 
+def find_post(id):
+    for p in my_posts:
+        if p["id"] == id:
+            return p
+
 @app.get("/")
 def root():
-    return {"message": "Weocome to my api"}
+    return {"result": "success"}
 
 @app.get("/posts")
 def get_posts():
-    return {"data": my_posts}
+    return {"result": my_posts}
 
 @app.post("/posts")
 def create_posts(post: Post):
     new_post = post.dict()
     new_post["id"] = len(my_posts) + 1
     my_posts.append(new_post)
-    return {"data": new_post}
+    return {"result": new_post}
+
+@app.get("/posts/{id}")
+def get_post(id: int):
+    post = find_post(id)
+    return {"result": post}
