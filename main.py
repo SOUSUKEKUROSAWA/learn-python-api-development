@@ -33,6 +33,7 @@ def get_posts():
 
 @app.post("/posts")
 def create_posts(post: Post):
-    print(post)
-    print(post.dict())
-    return {"data": post}
+    new_post = post.dict()
+    new_post["id"] = len(my_posts) + 1
+    my_posts.append(new_post)
+    return {"data": new_post}

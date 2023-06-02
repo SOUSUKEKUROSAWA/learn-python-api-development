@@ -83,6 +83,7 @@
 ## storing posts in Array
 - 簡単のためにまずはメモリにデータを保存していく
 ## creating posts
+- postmanでCollectionを作成
 ## Postman Collections & saving requests
 ## Retrieve One Post
 ## Path order Matters
