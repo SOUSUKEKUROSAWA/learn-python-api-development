@@ -71,6 +71,15 @@
   - Pythonがスクリプトを高速に実行するためのキャッシュが格納される
   - gitignoreに含めるべきもの
 ## Schema Validation with Pydantic
+- Pydantic
+  - リクエストボディのデータが特定の形式や条件を満たしていることを検証できる
+    - データが正しい型であること、特定の範囲内の値であること、特定の形式（例えば、メールアドレスや日付）であることなど、様々な条件を指定できる
+    - リクエストボディがPydanticモデルの条件を満たしていない場合、FastAPIは自動的に`400 Bad Request`エラーを返す
+  - strで制限をかけると，1のような数字が送信されて生きても，自動で文字列に変換される
+    - エラーはスローしない
+- `Optional[int]`
+  - Noneを許容するという意味
+  - int型が入るが，NoneでもOKというカラムを定義する
 ## CRUD Operations
 ## storing posts in Array
 ## creating posts
