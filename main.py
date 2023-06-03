@@ -43,6 +43,11 @@ def create_posts(post: Post):
     my_posts.append(new_post)
     return {"result": new_post}
 
+@app.get("/posts/latest")
+def get_latest_post():
+    post = my_posts[len(my_posts) - 1]
+    return {"result": post}
+
 @app.get("/posts/{id}")
 def get_post(id: int):
     post = find_post(id)

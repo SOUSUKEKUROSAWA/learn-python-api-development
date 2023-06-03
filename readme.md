@@ -101,7 +101,6 @@
     post = find_post(id)
     return {"result": post}
 ```
-## Path order Matters
 ## Changing response Status Codes
 ## Deleting Posts
 ## Updating Posts
