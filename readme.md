@@ -110,6 +110,24 @@
   - デフォルトは`200 OK`
   - 変更したい場合は，デコレータの第2引数で指定する
 ## Deleting Posts
+- 削除は成功するもののレスポンスメッセージが表示されない問題
+  - 状況
+    - ID指定の削除は成功し，ステータスコードも`204 No Content`を正常に返しているものの，設定したレスポンスメッセージだけ表示されない
+  - 原因
+    - FastAPIでは、HTTPステータスコード204（No Content）を指定した場合、ボディにコンテンツが含まれていてはならないとされているから
+      - これはHTTPのスペックに従った挙動で、204応答は「リクエストは成功し、それ以上の情報を返す必要はない」という意味を持つ
+  - 解決策
+    - レスポンスステータスを200（OK）に変更する　OR　レスポンスボディを返さないようにする
+```diff
+@app.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_post(id: int):
+    post = find_post(id)
+    if not post:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with id: {id} was not found")
+    my_posts.remove(post)
+-   return {"result": "success"}
++   return
+```
 ## Updating Posts
 ## Automatic Documentation
 ## Python packages
