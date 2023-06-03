@@ -7,6 +7,8 @@
 - source code
   - https://github.com/Sanjeev-Thiyagarajan/fastapi-course
 ## Course Intro
+- FastAPI
+  - https://fastapi.tiangolo.com/ja
 - FastAPIを採用した理由
   - API開発に特化したフレームワーク
   - 非常に高速な実行速度と開発速度
@@ -129,6 +131,8 @@ def delete_post(id: int):
 +   return
 ```
 ## Updating Posts
+- 返り値となる変数には`result`と命名する
+  - 返り値がどのように加工されたかが追いやすいから
 ## Automatic Documentation
 ## Python packages
 # Section 4: Databases
