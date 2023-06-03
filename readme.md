@@ -102,6 +102,13 @@
     return {"result": post}
 ```
 ## Changing response Status Codes
+- 現状，存在しないIDのPostを取得しようとしてもnullを返すだけ（Statusは`200 OK`を返してしまっている）
+  - これだと，フロント側で何が起こったのかを把握できない
+- エラーコードやエラーメッセージを毎回ハードコーディングするのはあまりよくない
+  - HTTPExeptionライブラリを使用するとよりシンプルに記述できる
+- リクエストが成功した際のステータスコード
+  - デフォルトは`200 OK`
+  - 変更したい場合は，デコレータの第2引数で指定する
 ## Deleting Posts
 ## Updating Posts
 ## Automatic Documentation
