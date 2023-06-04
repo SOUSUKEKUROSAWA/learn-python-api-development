@@ -69,9 +69,19 @@ def get_posts():
 
 @app.post("/posts", status_code=status.HTTP_201_CREATED)
 def create_post(post: Post):
-    result = post.dict()
-    result["id"] = len(posts) + 1
-    posts.append(result)
+    cursor.execute(
+        """
+        insert
+        into
+            posts
+            (title, content, published)
+        values
+            (%s, %s, %s) returning *
+        """,
+        (post.title, post.content, post.published)
+    )
+    result = cursor.fetchone()
+    conn.commit()
     return {"data": result}
 
 @app.get("/posts/{id}")

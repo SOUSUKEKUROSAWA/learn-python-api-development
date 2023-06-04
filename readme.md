@@ -289,6 +289,40 @@ def get_post(id: int):
     - ずっと失敗し続けると無限ループになってしまう
     - 一定時間失敗し続けたらエラーを返す
 ## Creating Post
+- SQLにパラメータを直接渡さない理由
+  - SQLインジェクションを防ぐため
+    - `cursor.execute`メソッドの第2引数として渡すことで，ユーザーの入力値がエスケープされ，SQLとして実行されることはなくなる
+    - SQLインジェクションの例
+      - `; DROP TABLE posts; --`
+        - `--`（コメントの開始記号）を付ける意味
+          - 攻撃者が意図しないSQLステートメントの残りの部分を無視させるため
+            - ex.)
+              - `SELECT * FROM users WHERE username = '[input]' AND password = '[input]'`に対して，`admin' --`という入力すると，`SELECT * FROM users WHERE username = 'admin' -- AND password = '[input]'`となり，コメント以降のWHERE句を無視してインジェクションを行えるから
+                - ***WHEREなどで条件を指定しているからSQLインジェクションされないというのは誤解***
+- `cursor.execute`メソッドでINSERT文を実行し，`cursot.fetchone`メソッドを実行してもDBに変更が反映されない理由
+  - 原因
+    - Pythonのデータベース接続ライブラリは、デフォルトでトランザクションを自動的に開始するから
+      - cursor.execute()を呼び出すと、新しいトランザクションが開始される
+  - 解決策
+    - `conn.commit()`の追加
+```diff
+@app.post("/posts", status_code=status.HTTP_201_CREATED)
+def create_post(post: Post):
+    cursor.execute(
+        """
+        insert
+        into
+            posts
+            (title, content, published)
+        values
+            (%s, %s, %s) returning *
+        """,
+        (post.title, post.content, post.published)
+    )
+    result = cursor.fetchone()
++   conn.commit()
+    return {"data": result}
+```
 ## Get One Post
 ## Delete Post
 ## Update Post
