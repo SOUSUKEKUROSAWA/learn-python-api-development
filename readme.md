@@ -194,6 +194,14 @@ def get_post(id: int):
   - リクエストボディのスキーマをより詳細に見れる
   - APIのエンドポイントを試す機能はない
 ## Python packages
+- Pythonパッケージ
+  - 一連のPythonファイルを組織化する方法
+  - パッケージは通常、特定のディレクトリにグループ化され、そのディレクトリには`__init__.py`という特別なファイルが含まれる
+- `__init__.py`
+  - そのディレクトリがPythonパッケージであることを示す役割
+  - 通常空ですが、パッケージの初期化コードを含むこともある
+- appディレクトの中にmain.pyを移動させたので，uvicornのコマンドも変更する必要がある
+  - `uvicorn app.main:app --reload`
 # Section 4: Databases
 ## Database Intro
 ## Postgres Windows Install
