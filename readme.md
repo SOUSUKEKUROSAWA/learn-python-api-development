@@ -220,6 +220,25 @@ def get_post(id: int):
 ## Database Schema & Tables
 - ![](https://storage.googleapis.com/zenn-user-upload/bd8dce626179-20230604.png)
 ## Managing Postgres with PgAdmin GUI
+- pgAdmin4というアプリを起動
+  - GUIアプリ
+    - Postgresを扱いやすくしてくれるが，中身ではSQLを発行しているだけ
+- PgAdmin4のパスワード
+  - PostgreSQLをインストールするときに設定するパスワードとは別物
+  - PgAdmin4を使用してPostgreSQLに接続する場合、その接続の設定にはPostgreSQLのスーパーユーザーパスワード（または他のデータベースユーザーのパスワード）が必要になる
+- サーバインスタンスの作成
+  - 接続設定
+    - ホストのIPアドレス・ドメイン
+      - localhost
+      - AWSなどのクラウドプロバイダーが提供しているドメイン
+    - ポート番号
+    - 管理DB
+      - デフォルトは`postgres`という名前のDB
+    - 管理DBのユーザー名とPW
+- NOT NULLだが，Default値を持たないカラムを追加する場合
+  - 既存のデータに矛盾が生じてしまう
+    - 解決策
+      - デフォルト値を設定する
 ## Your first SQL Query
 ## Filter results with "where" keyword
 ## SQL Operators
