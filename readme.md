@@ -239,16 +239,32 @@ def get_post(id: int):
   - 既存のデータに矛盾が生じてしまう
     - 解決策
       - デフォルト値を設定する
-## Your first SQL Query
-## Filter results with "where" keyword
 ## SQL Operators
-## IN Keyword
-## Pattern matching with LIKE keyword
-## Ordering Results
-## LIMIT & OFFSET
-## Inserting Data
-## Deleting Data
-## Updating Data
+- `!=`と`<>`は同じ意味
+- insertが成功したときの`INSERT 0 1`の意味
+  - `INSERT oid count`の形式になっている
+    - oid
+      - object IDの略
+        - 新しく挿入された行のオブジェクトIDを示している（PostgreSQLの初リリースで導入．v.8.1以降でデフォルトでは含まれなくなった）
+        - しかし，現代の多くのテーブルではOIDsは使用されていないため、この値は通常0になる
+    - count
+      - 新しく挿入された行数
+- oidが使用されなくなった理由
+  - OIDは整数型であり、その範囲は有限（2^32の最大値）だから
+    - したがって、大量の行を持つテーブルでは、一意のOIDを割り当てることができなくなるから
+    - ただし、現在でも，特定の目的でそれが必要な場合、テーブル作成時に明示的にOIDを含めるよう指定することは可能
+  - UUIDがOIDの問題を解消したから
+    - UUID(Universally Unique Identifier)
+    - 128 bit
+      - 可能なUUIDの数は2の128乗（約3.4 x 10^38）
+      - 同じUUIDが2回生成される確率は非常に低くなる
+    - アルゴリズムのランダム性
+    - 同じUUIDを生成する可能性が非常に低い
+- `returning <column name you wanna return>, ...`
+  - ex.)
+    - `insert into posts(name) values("kevin") returning *;`
+      - このコマンドによって挿入されたデータが返される
+    - delete文とかでも使える
 # Section 5: Python + Raw SQL
 ## Setup App Database
 ## Connecting to database w/ Python
