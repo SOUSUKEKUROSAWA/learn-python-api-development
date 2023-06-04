@@ -56,7 +56,16 @@ def root():
 
 @app.get("/posts")
 def get_posts():
-    return {"data": posts}
+    cursor.execute(
+        """
+        select 
+            * 
+        from 
+            posts
+        """
+    )
+    result = cursor.fetchall()
+    return {"data": result}
 
 @app.post("/posts", status_code=status.HTTP_201_CREATED)
 def create_post(post: Post):

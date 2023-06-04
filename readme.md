@@ -288,7 +288,6 @@ def get_post(id: int):
   - タイムリミットの設定
     - ずっと失敗し続けると無限ループになってしまう
     - 一定時間失敗し続けたらエラーを返す
-## Retrieving Posts
 ## Creating Post
 ## Get One Post
 ## Delete Post
