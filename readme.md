@@ -324,6 +324,51 @@ def create_post(post: Post):
     return {"data": result}
 ```
 ## Get One Post
+- `TypeError: 'int' object does not support indexing`
+  - 状況
+    - `cursor.execute("""select * from posts where id = %s""",(id))`を実行
+    - `TypeError: 'int' object does not support indexing`が発生
+  - 原因
+    - 第2引数がタプルまたはリストであることが期待されるものの、単なる括弧`(id)`が渡されていたから
+  - 解決策
+    - 第2引数をタプル形式にする
+```diff
+@app.get("/posts/{id}")
+def get_post(id: int):
+    cursor.execute(
+        """
+        select 
+            * 
+        from 
+            posts
+        where
+            id = %s
+        """,
+-       (id)
++       (id,)
+    )
+    result = cursor.fetchone()
+    if not result:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with id: {id} was not found")
+    return {"data": result}
+```
+- タプルとリストの違い
+  - 変更可能性（Mutability）
+    - リスト
+      - 変更可能
+    - タプル
+      - 変更不可能
+  - 用途
+    - リスト
+      - 要素の追加、削除、変更が頻繁に行われる場合
+      - リストは順序を持つため、順序が重要な情報を保持する場合
+    - タプル
+      - 一度設定されたら変更されることのないデータを保持する場合
+      - 辞書のキーとしての使用
+        - `coordinates_dict = {(37.7749, -122.4194): 'San Francisco'}`
+      - 異なる種類のデータを安全にグループ化する
+        - `person = ("John Doe", 30, "johndoe@example.com")`
+          - タプルは変更できないので，このようなデータ構造を安全に使用できる
 ## Delete Post
 ## Update Post
 # Section 6: ORMs
