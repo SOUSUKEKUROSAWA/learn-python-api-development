@@ -218,6 +218,7 @@ def get_post(id: int):
 - https://www.postgresql.org/download/
 - https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
 ## Database Schema & Tables
+- ![](https://storage.googleapis.com/zenn-user-upload/bd8dce626179-20230604.png)
 ## Managing Postgres with PgAdmin GUI
 ## Your first SQL Query
 ## Filter results with "where" keyword
