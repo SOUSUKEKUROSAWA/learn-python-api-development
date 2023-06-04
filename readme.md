@@ -204,6 +204,16 @@ def get_post(id: int):
   - `uvicorn app.main:app --reload`
 # Section 4: Databases
 ## Database Intro
+- DBとダイレクトにインタラクトするのは大変
+  - DBMSをDBとの間に配置し，簡単にインタラクトを実現する
+    - ミドルウェアと呼ばれる所以
+    - ![](https://storage.googleapis.com/zenn-user-upload/bc2b8fd5da22-20230604.png)
+- Postgres
+  - ![](https://storage.googleapis.com/zenn-user-upload/371badd62819-20230604.png)
+  - インストール時に作成される`postgres`という名前のDBについて
+    - PostgreSQLシステム自体の動作に必要な情報を格納するためのもの．管理用のデータベース
+      - 新しいデータベースが作成されるときのテンプレートとしても機能する
+      - システムユーザーがPostgreSQLサーバーに接続するためのデフォルトの接続ポイントとしても機能する
 ## Postgres Windows Install
 ## Postgres Mac Install
 ## Database Schema & Tables
