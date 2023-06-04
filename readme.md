@@ -214,8 +214,9 @@ def get_post(id: int):
     - PostgreSQLシステム自体の動作に必要な情報を格納するためのもの．管理用のデータベース
       - 新しいデータベースが作成されるときのテンプレートとしても機能する
       - システムユーザーがPostgreSQLサーバーに接続するためのデフォルトの接続ポイントとしても機能する
-## Postgres Windows Install
-## Postgres Mac Install
+## Postgres Install
+- https://www.postgresql.org/download/
+- https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
 ## Database Schema & Tables
 ## Managing Postgres with PgAdmin GUI
 ## Your first SQL Query
