@@ -268,6 +268,26 @@ def get_post(id: int):
 # Section 5: Python + Raw SQL
 ## Setup App Database
 ## Connecting to database w/ Python
+- w/ = with
+- https://www.psycopg.org/docs/usage.html
+- `pip install psycopg2`
+- venvの中で`WARNING: You are using pip version 22.0.4; however, version 23.1.2 is available.You should consider upgrading via the 'C:\Users\kuros\Documents\learn-python-api-development\venv\Scripts\python.exe -m pip install --upgrade pip' command.`の警告が表示された場合の対処法
+  - `python -m pip install --upgrade pip`
+- `conn = psycopg2.connect(..., cursor_factory=RealDictCursor)`は何をしているのか
+  - データベースから取得する結果をPythonの辞書形式で取得するための設定
+    - これにより、カラム名をキーとして結果を取得することが可能になる
+- `cursor = conn.cursor()`は何をしているのか
+  - カーソルを作成している
+    - カーソルとは
+      - データベースに対する操作（SQLクエリの実行など）を行うためのオブジェクト
+- DB接続は接続されるまでループさせる
+  - 接続成功した場合
+    - `break`
+  - 接続失敗した場合
+    - 一定時間`sleep`させた後ループ
+  - タイムリミットの設定
+    - ずっと失敗し続けると無限ループになってしまう
+    - 一定時間失敗し続けたらエラーを返す
 ## Retrieving Posts
 ## Creating Post
 ## Get One Post
