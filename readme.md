@@ -53,6 +53,17 @@
     - `uvicorn main:app`コマンドはコードの変更を監視していないから
   - 解決策
     - `uvicorn main:app --reload`
+- ポート8000にリクエストを送っているはずが，8000以外のポートにリクエストが送られている理由
+  - 状況
+    - デフォルトでは`127.0.0.1:8000`をリッスンしているはずが，ログでは`127.0.0.1:62218`や` 127.0.0.1:62225`などにリクエストが送られている
+  - 原因
+    - OSが自動でソースポートを割り当てているから
+      - ソースポート
+        - ソースポートと宛先ポート（この場合は8000）の組み合わせ、さらには送信元と宛先のIPアドレスと組み合わせることで、インターネット上の各通信が一意に識別される仕組み
+        - クライアント（今回の場合はPostman）がサーバーに接続するとき、通信を一意に識別するためにソースポートと呼ばれる一時的なポートを自動的に割り当てる
+          - 例）
+            - 同じクライアントが同じHTTPメソッドで同じパスのリクエストを複数回送信した場合に，ポートが同じだと識別しづらいため，ポートを分けて識別しやすくしている
+            - これによって，サーバは各レスポンスをどのリクエストに対応付ければいいかを判断している
 ## Path Operation Order(yes it matters)
 - 同じパスがあった場合，上に書かれている方が読み取られて，それ以降のものは無視される
 ## HTTP Post Requests
@@ -134,6 +145,54 @@ def delete_post(id: int):
 - 返り値となる変数には`result`と命名する
   - 返り値がどのように加工されたかが追いやすいから
 ## Automatic Documentation
+- `/docs`
+  - 組み込みのAPIドキュメントが表示される
+    - SwaggerUIを使用して作成されている
+- Curlとは？
+  - コマンドラインからHTTPリクエストを送信するためのツール
+    - FastAPIの組み込みSwagger UIに表示されているCurl
+      - Swagger UIから実行したPOSTリクエストを同じCurlコマンドで再現するためのもの
+        - そのAPIエンドポイントに対するリクエストをCurlでどのように行うかを示しています。
+        - これにより、開発者はAPIのテストやデバッグを容易に行うことができます。
+- SwaggerUIの`Successful Response`の部分が`"string"`となってしまっている問題
+  - 状況
+    - SwaggerUIの`create_post`メソッドの`Successful Response`の部分が`"string"`となってしまっている
+      - 実際には`{data: [post]}`のような形式のレスポンスになるはず
+  - 原因
+    - コード内のデコレータの部分で`response_model`を定義していないから
+  - 解決策
+    - デコレータの部分で`response_model`を定義する
+```diff
++ from typing import List
+
++ class PostResponse(BaseModel):
++    data: List[Post]
+
+- @app.post("/posts", status_code=status.HTTP_201_CREATED)
++ @app.post("/posts", status_code=status.HTTP_201_CREATED, response_model=PostResponse)
+def create_post(post: Post):
+    result = post.dict()
+    result["id"] = len(posts) + 1
+    posts.append(result)
+    return {"data": result}
+```
+- 実装した404エラーのレスポンスをドキュメント化する方法
+  - `response`パラメータをデコレータに追加する
+```diff
++ class ErrorResponse(BaseModel):
++     detail: str
+
+- @app.get("/posts/{id}")
++ @app.get("/posts/{id}", responses={404: {"model": ErrorResponse, "description": "Post not found"}})
+def get_post(id: int):
+    result = find_post(id)
+    if not result:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with id: {id} was not found")
+    return {"data": result}
+```
+- `/redoc`
+  - リクエストボディのスキーマをより詳細に見れる
+  - APIのエンドポイントを試す機能はない
 ## Python packages
 # Section 4: Databases
 ## Database Intro
