@@ -371,6 +371,10 @@ def get_post(id: int):
           - タプルは変更できないので，このようなデータ構造を安全に使用できる
 # Section 6: ORMs
 ## ORM intro
+- object relational mapper
+  - ![](https://storage.googleapis.com/zenn-user-upload/a3ef72792140-20230605.png)
+  - Pythonのモデルでテーブルを定義できる
+  - Pythonのコードでクエリできる
 ## SQLALCHEMY setup
 ## Adding CreatedAt Column
 ## Get All Posts
