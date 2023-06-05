@@ -122,8 +122,19 @@ def delete_post(id: int):
 
 @app.put("/posts/{id}")
 def update_post(id: int, post: Post):
-    result = find_post(id)
+    cursor.execute(
+        """
+        update
+            posts
+        set
+            title = %s, content = %s, published = %s
+        where
+            id = %s returning *
+        """,
+        (post.title, post.content, post.published, id)
+    )
+    result = cursor.fetchone()
+    conn.commit()
     if not result:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with id: {id} was not found")
-    result.update(post.dict())
     return {"data": result}

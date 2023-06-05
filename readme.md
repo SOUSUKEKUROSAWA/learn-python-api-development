@@ -369,7 +369,6 @@ def get_post(id: int):
       - 異なる種類のデータを安全にグループ化する
         - `person = ("John Doe", 30, "johndoe@example.com")`
           - タプルは変更できないので，このようなデータ構造を安全に使用できる
-## Update Post
 # Section 6: ORMs
 ## ORM intro
 ## SQLALCHEMY setup
