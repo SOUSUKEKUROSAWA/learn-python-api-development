@@ -376,6 +376,27 @@ def get_post(id: int):
   - Pythonのモデルでテーブルを定義できる
   - Pythonのコードでクエリできる
 ## SQLALCHEMY setup
+- スタンドアローンなORMライブラリ
+  - 他のライブラリに依存せずにすべての機能を提供しているライブラリ
+- 最新版の確認
+  - https://docs.sqlalchemy.org
+- インストール
+  - https://fastapi.tiangolo.com/ja/tutorial/sql-databases/#install-sqlalchemy
+- `pip install sqlalchemy`
+- インポート
+  - https://fastapi.tiangolo.com/ja/tutorial/sql-databases/#import-the-sqlalchemy-parts
+- `engine`
+  - SQLAlchemyがクエリを実行するために必要なデータベースAPIへのゲートウェイとして機能する
+- `SessionLocal`
+  - セッションのライフサイクルを管理する
+- `Base`
+  - 作成するすべてのモデルクラスの基底クラス
+- FastAPIの依存関係
+  - 特定の関数やクラスが他の何か（一般的には関数）を必要とするという概念
+    - ex.)
+      - `get_db`
+        - データベースセッションを提供し，リクエスト処理が完了したらリソースを開放する
+  - FastAPIの依存関係はHTTPリクエストのライフサイクルと結びついている
 ## Adding CreatedAt Column
 ## Get All Posts
 ## Create Posts

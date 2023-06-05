@@ -1,13 +1,18 @@
 import time
-from fastapi import FastAPI, status, HTTPException
+from fastapi import FastAPI, status, HTTPException, Depends
 import psycopg2
 from pydantic import BaseModel
 from psycopg2.extras import RealDictCursor
 from dotenv import load_dotenv
 import os
 from datetime import datetime, timedelta
-
+from . import models
+from .database import engine, get_db
+from sqlalchemy.orm import Session
 load_dotenv()
+
+# create new tables
+models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
