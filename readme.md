@@ -397,6 +397,19 @@ def get_post(id: int):
       - `get_db`
         - データベースセッションを提供し，リクエスト処理が完了したらリソースを開放する
   - FastAPIの依存関係はHTTPリクエストのライフサイクルと結びついている
+- デフォルト値がDBに反映されない問題
+  - 状況
+    - `published = Column(Boolean, default=True)`としてもDBにデフォルト値が反映されない
+  - 原因
+    - Pythonレベルで操作していない（つまりSQLAlchemyのSessionを通じてデータを挿入していない）から
+  - 解決策
+```diff
+- published = Column(Boolean, default=True)
++ published = Column(Boolean, server_default='TRUE')
+```
+- モデルの修正が反映されない理由
+  - SQLAlchemyのモデルは定義されているテーブル名と同じテーブルが作成されていれば，その中身は見ずに変更も反映しないから
+  - これを解決するのがマイグレーション
 ## Adding CreatedAt Column
 ## Get All Posts
 ## Create Posts
