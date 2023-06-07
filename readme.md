@@ -403,6 +403,7 @@ def get_post(id: int):
   - 原因
     - Pythonレベルで操作していない（つまりSQLAlchemyのSessionを通じてデータを挿入していない）から
   - 解決策
+    - DBに直接文字列を追加する`server_default`を使用する
 ```diff
 - published = Column(Boolean, default=True)
 + published = Column(Boolean, server_default='TRUE')
@@ -410,7 +411,6 @@ def get_post(id: int):
 - モデルの修正が反映されない理由
   - SQLAlchemyのモデルは定義されているテーブル名と同じテーブルが作成されていれば，その中身は見ずに変更も反映しないから
   - これを解決するのがマイグレーション
-## Adding CreatedAt Column
 ## Get All Posts
 ## Create Posts
 ## Get Post by ID
