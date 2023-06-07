@@ -37,39 +37,13 @@ while True:
         print(error)
         time.sleep(2)
 
-posts = [
-    {
-        "title": "title of post 1",
-        "content": "content of post 1",
-        "id": 1,
-    },
-    {
-        "title": "title of post 2", 
-        "content": "content of post 2", 
-        "id": 2,
-    },
-]
-
-def find_post(id):
-    for post in posts:
-        if post["id"] == id:
-            return post
-
 @app.get("/")
 def root():
     return {"message": "success"}
 
 @app.get("/posts")
-def get_posts():
-    cursor.execute(
-        """
-        select 
-            * 
-        from 
-            posts
-        """
-    )
-    result = cursor.fetchall()
+def get_posts(db: Session = Depends(get_db)):
+    result = db.query(models.Post).all()
     return {"data": result}
 
 @app.post("/posts", status_code=status.HTTP_201_CREATED)

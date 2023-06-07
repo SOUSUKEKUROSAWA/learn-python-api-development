@@ -412,6 +412,7 @@ def get_post(id: int):
   - SQLAlchemyのモデルは定義されているテーブル名と同じテーブルが作成されていれば，その中身は見ずに変更も反映しないから
   - これを解決するのがマイグレーション
 ## Get All Posts
+- ORMを実行するときは，DBセッションをメソッドの引数に渡す必要がある
 ## Create Posts
 ## Get Post by ID
 ## Delete Post
