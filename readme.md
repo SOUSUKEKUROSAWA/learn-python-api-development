@@ -425,6 +425,10 @@ def get_post(id: int):
     - DBからはすぐに削除されるが，セッションが終了するまでPythonのオブジェクトは削除されない
 # Section 7: Pydantic Models
 ## Pydantic vs ORM Models
+- Schema/Pydanticモデル
+  - リクエスト＆レスポンスの構造を定義するもの
+- ORM Models
+  - DB内のテーブルを定義する
 ## Pydantic Models Deep Dive
 ## Response Model
 # Section 8: Authentication & Users
