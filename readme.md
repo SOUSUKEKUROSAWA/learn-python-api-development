@@ -414,6 +414,8 @@ def get_post(id: int):
 ## Get All Posts
 - ORMを実行するときは，DBセッションをメソッドの引数に渡す必要がある
 ## Create Posts
+- `**post.dict()`
+  - Pythonの辞書（dictオブジェクト）をキーワード引数として展開する構文
 ## Get Post by ID
 ## Delete Post
 ## Update Post

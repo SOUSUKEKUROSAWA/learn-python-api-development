@@ -47,20 +47,11 @@ def get_posts(db: Session = Depends(get_db)):
     return {"data": result}
 
 @app.post("/posts", status_code=status.HTTP_201_CREATED)
-def create_post(post: Post):
-    cursor.execute(
-        """
-        insert
-        into
-            posts
-            (title, content, published)
-        values
-            (%s, %s, %s) returning *
-        """,
-        (post.title, post.content, post.published)
-    )
-    result = cursor.fetchone()
-    conn.commit()
+def create_post(post: Post, db: Session = Depends(get_db)):
+    result = models.Post(**post.dict())
+    db.add(result)
+    db.commit()
+    db.refresh(result) # to get result returned
     return {"data": result}
 
 @app.get("/posts/{id}")
