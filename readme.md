@@ -423,7 +423,6 @@ def get_post(id: int):
 - `synchronize_session=False`
   - DBとセッションの同期を行わないことで，パフォーマンスを向上させるオプション
     - DBからはすぐに削除されるが，セッションが終了するまでPythonのオブジェクトは削除されない
-## Update Post
 # Section 7: Pydantic Models
 ## Pydantic vs ORM Models
 ## Pydantic Models Deep Dive
