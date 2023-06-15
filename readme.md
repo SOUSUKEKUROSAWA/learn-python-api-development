@@ -420,6 +420,9 @@ def get_post(id: int):
 - `.first()`と`.all()`の違い
   - `db.query(models.Post).filter(models.Post.id == id).all()`としても`db.query(models.Post).filter(models.Post.id == id).first()`としても結果は一緒だが，allの方は1件見つかった後もすべてのデータを検索するので多くのメモリを消費してしまう．firstの方は1件見つかったらそこで検索を止める
 ## Delete Post
+- `synchronize_session=False`
+  - DBとセッションの同期を行わないことで，パフォーマンスを向上させるオプション
+    - DBからはすぐに削除されるが，セッションが終了するまでPythonのオブジェクトは削除されない
 ## Update Post
 # Section 7: Pydantic Models
 ## Pydantic vs ORM Models
