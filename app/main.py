@@ -6,7 +6,7 @@ from psycopg2.extras import RealDictCursor
 from dotenv import load_dotenv
 import os
 from datetime import datetime, timedelta
-from . import models
+from . import models, schemas
 from .database import engine, get_db
 from sqlalchemy.orm import Session
 load_dotenv()
@@ -16,17 +16,11 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-class Post(BaseModel):
-    title: str
-    content: str
-    published: bool = True
-
 end_time = datetime.now() + timedelta(seconds=30)
 
 while True:
     if datetime.now() > end_time:
         raise Exception("Could not connect to the database within 30 seconds")
-
     try:
         conn = psycopg2.connect(host=os.getenv("DB_HOST"), database=os.getenv("DB_NAME"), user=os.getenv("DB_USER"), password=os.getenv("DB_PASSWORD"), cursor_factory=RealDictCursor)
         cursor = conn.cursor()
@@ -47,7 +41,7 @@ def get_posts(db: Session = Depends(get_db)):
     return {"data": result}
 
 @app.post("/posts", status_code=status.HTTP_201_CREATED)
-def create_post(post: Post, db: Session = Depends(get_db)):
+def create_post(post: schemas.PostCreate, db: Session = Depends(get_db)):
     result = models.Post(**post.dict())
     db.add(result)
     db.commit()
@@ -71,7 +65,7 @@ def delete_post(id: int, db: Session = Depends(get_db)):
     return
 
 @app.put("/posts/{id}")
-def update_post(id: int, post: Post, db: Session = Depends(get_db)):
+def update_post(id: int, post: schemas.PostCreate, db: Session = Depends(get_db)):
     result = db.query(models.Post).filter(models.Post.id == id)
     if not result.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with id: {id} was not found")

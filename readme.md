@@ -429,7 +429,6 @@ def get_post(id: int):
   - リクエスト＆レスポンスの構造を定義するもの
 - ORM Models
   - DB内のテーブルを定義する
-## Pydantic Models Deep Dive
 ## Response Model
 # Section 8: Authentication & Users
 ## Creating Users Table
