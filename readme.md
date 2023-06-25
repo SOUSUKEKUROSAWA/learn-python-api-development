@@ -464,6 +464,7 @@ def get_posts(db: Session = Depends(get_db)):
 ```
 # Section 8: Authentication & Users
 ## User Registration Path Operation
+- レスポンスにパスワードを含めたくない
 ## Hashing User Passwords
 ## Refractor Hashing Logic
 ## Get User by ID
