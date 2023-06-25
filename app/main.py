@@ -1,7 +1,7 @@
 import time
+from typing import List
 from fastapi import FastAPI, status, HTTPException, Depends
 import psycopg2
-from pydantic import BaseModel
 from psycopg2.extras import RealDictCursor
 from dotenv import load_dotenv
 import os
@@ -35,25 +35,25 @@ while True:
 def root():
     return {"message": "success"}
 
-@app.get("/posts")
+@app.get("/posts", response_model=List[schemas.Post])
 def get_posts(db: Session = Depends(get_db)):
     result = db.query(models.Post).all()
-    return {"data": result}
+    return result
 
-@app.post("/posts", status_code=status.HTTP_201_CREATED)
+@app.post("/posts", status_code=status.HTTP_201_CREATED, response_model=schemas.Post)
 def create_post(post: schemas.PostCreate, db: Session = Depends(get_db)):
     result = models.Post(**post.dict())
     db.add(result)
     db.commit()
     db.refresh(result) # to get result returned
-    return {"data": result}
+    return result
 
-@app.get("/posts/{id}")
+@app.get("/posts/{id}", response_model=schemas.Post)
 def get_post(id: int, db: Session = Depends(get_db)):
     result = db.query(models.Post).filter(models.Post.id == id).first()
     if not result:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with id: {id} was not found")
-    return {"data": result}
+    return result
 
 @app.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_post(id: int, db: Session = Depends(get_db)):
@@ -64,11 +64,11 @@ def delete_post(id: int, db: Session = Depends(get_db)):
     db.commit()
     return
 
-@app.put("/posts/{id}")
+@app.put("/posts/{id}", response_model=schemas.Post)
 def update_post(id: int, post: schemas.PostCreate, db: Session = Depends(get_db)):
     result = db.query(models.Post).filter(models.Post.id == id)
     if not result.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with id: {id} was not found")
     result.update(post.dict(), synchronize_session=False)
     db.commit()
-    return {"data": result.first()}
+    return result.first()

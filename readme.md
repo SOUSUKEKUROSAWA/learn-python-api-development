@@ -430,6 +430,38 @@ def get_post(id: int):
 - ORM Models
   - DB内のテーブルを定義する
 ## Response Model
+- メソッドのレスポンスの形式を定義する
+- `response_model=schemas.Post`とした時にエラーが発生する理由
+  - 状況
+    - `response_model=schemas.Post`としてcreate_postメソッドを実行した時にエラーが発生
+      - `value is not a valid dict (type=type_error.dict)`
+  - 原因
+    - レスポンスがSQLAlchemyモデルであるため，Pythonの辞書に変換（シリアライズ）できないこと
+      - 戻り値の型を指定しなければFastAPIは戻り値をそのままれす本にするが，今回のようにresponse_modelを指定した場合，レスポンスを生成する前に戻り値を指定されたresponse_modelに変換しようとする．その際にエラーが発生した
+  - 解決策
+    - PydanticにSQLAlchemyモデルを直接扱うように設定する
+```diff
+class Post(BaseModel):
+    title: str
+    content: str
+    published: bool
++   class Config:
++       orm_mode = True
+```
+- 他のモデルを継承できるのが便利
+- get_postsメソッドでエラーが発生する理由
+  - 状況
+    - get_postsメソッドを実行すると，ValidationErrorが発生
+  - 原因
+    - `db.query(models.Post).all()`から返される結果がPostオブジェクトのリストにもかかわらず，`response_model=schemas.Post`と指定していたから
+  - 解決策
+```diff
+- @app.get("/posts", response_model=schemas.Post)
++ @app.get("/posts", response_model=List[schemas.Post])
+def get_posts(db: Session = Depends(get_db)):
+    result = db.query(models.Post).all()
+    return result
+```
 # Section 8: Authentication & Users
 ## Creating Users Table
 ## User Registration Path Operation
