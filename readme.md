@@ -463,7 +463,6 @@ def get_posts(db: Session = Depends(get_db)):
     return result
 ```
 # Section 8: Authentication & Users
-## Creating Users Table
 ## User Registration Path Operation
 ## Hashing User Passwords
 ## Refractor Hashing Logic
