@@ -9,7 +9,10 @@ from datetime import datetime, timedelta
 from . import models, schemas
 from .database import engine, get_db
 from sqlalchemy.orm import Session
+from passlib.context import CryptContext
 load_dotenv()
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # create new tables
 models.Base.metadata.create_all(bind=engine)
@@ -75,7 +78,12 @@ def update_post(id: int, post: schemas.PostCreate, db: Session = Depends(get_db)
 
 @app.post("/users", status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    result = models.User(**user.dict())
+    user_dict = user.dict()
+    # hash the password - user.password
+    hashed_password = pwd_context.hash(user.password)
+    user_dict['password'] = hashed_password
+    # create user in db
+    result = models.User(**user_dict)
     db.add(result)
     db.commit()
     db.refresh(result)

@@ -466,6 +466,38 @@ def get_posts(db: Session = Depends(get_db)):
 ## User Registration Path Operation
 - レスポンスにパスワードを含めたくない
 ## Hashing User Passwords
+- 誰でも読める形でパスワードをDBに保存しておくのは危険
+- https://fastapi.tiangolo.com/ja/tutorial/security/oauth2-jwt/#_1
+- `pip install passlib[bcrypt]`
+- printメソッドでターミナルに値を出力できない問題
+  - 状況
+    - print()で変数を出力しようとしても表示されない
+  - 原因
+    - uvicornの仕様で一部のコード（特に初期化や設定のコード）が起動時に一度だけ読み込まれ、その後のコードの変更がリアルタイムに反映されないためだと思われる
+  - 解決策
+    - uvicornの再起動
+- パスワードが正常にハッシュ化されない問題
+  - 状況
+    - create_userメソッドを実行してもパスワードのハッシュ化が行われない
+  - 原因
+    - userオブジェクトが関数引数で受け取ったimmutableなPydanticモデルのため
+  - 解決策
+```diff
+@app.post("/users", status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut)
+def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
++   user_dict = user.dict()
+    # hash the password - user.password
+    hashed_password = pwd_context.hash(user.password)
+-   user.password = hashed_password
++   user_dict['password'] = hashed_password
+    
+-   result = models.User(**user.dict())
++   result = models.User(**user_dict)
+    db.add(result)
+    db.commit()
+    db.refresh(result)
+    return result
+```
 ## Refractor Hashing Logic
 ## Get User by ID
 ## FastAPI Routers
