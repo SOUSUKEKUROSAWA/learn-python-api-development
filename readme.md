@@ -499,6 +499,14 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return result
 ```
 ## FastAPI Routers
+- ルーティングを別ファイルに分離させる
+- FastAPI()とAPIRouter()の違い
+  - APIRouter
+    - エンドポイントのグループ化や大規模なアプリケーションの構造化を可能にする
+    - そのエンドポイントを持つFastAPIアプリケーションに組み込むことができる
+  - FastAPI
+    - 単一のアプリケーション全体を表します
+    - 単体で完全なアプリケーションを形成します
 ## Router Prefix
 ## Router Tags
 ## JWT Token Basics

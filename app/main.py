@@ -1,14 +1,14 @@
 import time
-from typing import List
-from fastapi import FastAPI, status, HTTPException, Depends
+from fastapi import FastAPI
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from dotenv import load_dotenv
 import os
 from datetime import datetime, timedelta
-from . import models, schemas, utils
-from .database import engine, get_db
-from sqlalchemy.orm import Session
+from . import models
+from .database import engine
+from .routers import post, user
+
 load_dotenv()
 
 # create new tables
@@ -35,66 +35,5 @@ while True:
 def root():
     return {"message": "success"}
 
-@app.get("/posts", response_model=List[schemas.Post])
-def get_posts(db: Session = Depends(get_db)):
-    result = db.query(models.Post).all()
-    return result
-
-@app.post("/posts", status_code=status.HTTP_201_CREATED, response_model=schemas.Post)
-def create_post(post: schemas.PostCreate, db: Session = Depends(get_db)):
-    result = models.Post(**post.dict())
-    db.add(result)
-    db.commit()
-    db.refresh(result) # to get result returned
-    return result
-
-@app.get("/posts/{id}", response_model=schemas.Post)
-def get_post(id: int, db: Session = Depends(get_db)):
-    result = db.query(models.Post).filter(models.Post.id == id).first()
-    if not result:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with id: {id} was not found")
-    return result
-
-@app.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_post(id: int, db: Session = Depends(get_db)):
-    query_get_post_by_id = db.query(models.Post).filter(models.Post.id == id)
-    if not query_get_post_by_id.first():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with id: {id} was not found")
-    query_get_post_by_id.delete(synchronize_session=False)
-    db.commit()
-    return
-
-@app.put("/posts/{id}", response_model=schemas.Post)
-def update_post(id: int, post: schemas.PostCreate, db: Session = Depends(get_db)):
-    query_get_post_by_id = db.query(models.Post).filter(models.Post.id == id)
-    if not query_get_post_by_id.first():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with id: {id} was not found")
-    query_get_post_by_id.update(post.dict(), synchronize_session=False)
-    db.commit()
-    result = query_get_post_by_id.first()
-    return result
-
-@app.get("/users", response_model=List[schemas.UserOut])
-def get_users(db: Session = Depends(get_db)):
-    result = db.query(models.User).all()
-    return result
-
-@app.post("/users", status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut)
-def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    user_dict = user.dict()
-    # hash the password - user.password
-    hashed_password = utils.hash(user.password)
-    user_dict['password'] = hashed_password
-    # create user in db
-    result = models.User(**user_dict)
-    db.add(result)
-    db.commit()
-    db.refresh(result)
-    return result
-
-@app.get("/users/{id}", response_model=schemas.UserOut)
-def get_user(id: int, db: Session = Depends(get_db)):
-    result = db.query(models.User).filter(models.User.id == id).first()
-    if not result:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"user with id: {id} was not found")
-    return result
+app.include_router(post.router)
+app.include_router(user.router)
