@@ -35,6 +35,8 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     result = db.query(models.User).filter(models.User.id == valid_token.id).first()
     return result
 
+# --- helper functions ---
+
 def create_payload(data: dict):
     result = data.copy()
     expire = datetime.utcnow() + timedelta(minutes=int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")))
