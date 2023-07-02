@@ -614,6 +614,10 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     - 自動エラーハンドリング
       - 依存関係が問題を引き起こす場合（例えば、データベース接続に問題がある場合や、認証トークンが無効な場合など）、FastAPIの依存性システムはこれらの問題を自動的にハンドリングします。
 ## Fixing Bugs
+- now vs utcnow
+  - utcnow｜協定世界時
+  - now｜ローカルシステム時刻
+  - サーバがアメリカで稼働していて、ユーザがヨーロッパからアクセスした場合、それぞれの地域の時間を使用してしまうと時間のずれが発生します。そのため、すべての時間計算はUTCを基準に行われることが多い
 ## Protecting Routes
 ## Test Expired Token
 ## Fetching User in Protected Routes
