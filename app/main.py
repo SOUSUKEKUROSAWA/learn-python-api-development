@@ -7,7 +7,7 @@ import os
 from datetime import datetime, timedelta
 from . import models
 from .database import engine
-from .routers import post, user
+from .routers import post, user, auth
 
 load_dotenv()
 
@@ -37,3 +37,4 @@ def root():
 
 app.include_router(post.router)
 app.include_router(user.router)
+app.include_router(auth.router)
