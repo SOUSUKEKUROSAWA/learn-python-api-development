@@ -57,21 +57,27 @@ def get_post(id: int, db: Session = Depends(get_db)):
 
 @app.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_post(id: int, db: Session = Depends(get_db)):
-    post = db.query(models.Post).filter(models.Post.id == id)
-    if not post.first():
+    query_get_post_by_id = db.query(models.Post).filter(models.Post.id == id)
+    if not query_get_post_by_id.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with id: {id} was not found")
-    post.delete(synchronize_session=False)
+    query_get_post_by_id.delete(synchronize_session=False)
     db.commit()
     return
 
 @app.put("/posts/{id}", response_model=schemas.Post)
 def update_post(id: int, post: schemas.PostCreate, db: Session = Depends(get_db)):
-    result = db.query(models.Post).filter(models.Post.id == id)
-    if not result.first():
+    query_get_post_by_id = db.query(models.Post).filter(models.Post.id == id)
+    if not query_get_post_by_id.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with id: {id} was not found")
-    result.update(post.dict(), synchronize_session=False)
+    query_get_post_by_id.update(post.dict(), synchronize_session=False)
     db.commit()
-    return result.first()
+    result = query_get_post_by_id.first()
+    return result
+
+@app.get("/users", response_model=List[schemas.UserOut])
+def get_users(db: Session = Depends(get_db)):
+    result = db.query(models.User).all()
+    return result
 
 @app.post("/users", status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
@@ -84,4 +90,11 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.add(result)
     db.commit()
     db.refresh(result)
+    return result
+
+@app.get("/users/{id}", response_model=schemas.UserOut)
+def get_user(id: int, db: Session = Depends(get_db)):
+    result = db.query(models.User).filter(models.User.id == id).first()
+    if not result:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"user with id: {id} was not found")
     return result
