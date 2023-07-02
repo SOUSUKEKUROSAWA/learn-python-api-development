@@ -510,6 +510,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 ## Router Prefix
 - 同じパス（`/posts`）などを何度も書くのは少し面倒
 ## Router Tags
+- APIドキュメント状でグルーピング出来る
 ## JWT Token Basics
 ## Login Process  
 ## Creating a Token
