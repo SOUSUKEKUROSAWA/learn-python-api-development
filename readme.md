@@ -589,6 +589,17 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
   - このトークンは、クライアントがその後のリクエストで使用することができ、そのリクエストが認証され、リソースにアクセスできることを意味します。
 - https://jwt.io/
 ## OAuth2 PasswordRequestForm
+- OAuth2PasswordRequestFormクラス
+  - ![](https://storage.googleapis.com/zenn-user-upload/00873fe3fad0-20230702.png)
+  - FastAPIが提供する依存性ツールの1つで、ユーザーのログイン情報（通常はユーザー名とパスワード）をリクエストから取得するために使用されています。
+    - username
+      - ユーザー名（ここでは、それはメールアドレスとして扱われている）
+    - password
+      - ユーザーのパスワード
+    - scope
+      - オプションの認証スコープ
+    - grant_type
+      - オプションのグラントタイプ
 ## Verify user is Logged In
 ## Fixing Bugs
 ## Protecting Routes
