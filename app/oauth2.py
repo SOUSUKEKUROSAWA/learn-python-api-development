@@ -14,9 +14,7 @@ load_dotenv()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 def create_access_token(data: dict):
-    payload = data.copy()
-    expire = datetime.utcnow() + timedelta(minutes=int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")))
-    payload.update({"exp": expire})
+    payload = create_payload(data)
     result = jwt.encode(payload, os.getenv("SECRET_KEY"), algorithm=os.getenv("ALGORITHM"))
     return result
 
@@ -33,7 +31,15 @@ def verify_access_token(token: str, credential_exception):
         raise credential_exception
 
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
-    credential_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials", headers={"WWW-Authenticate": "Bearer"})
-    token = verify_access_token(token, credential_exception)
-    result = db.query(models.User).filter(models.User.id == token.id).first()
+    valid_token = verify_access_token(token, create_credential_exception())
+    result = db.query(models.User).filter(models.User.id == valid_token.id).first()
     return result
+
+def create_payload(data: dict):
+    result = data.copy()
+    expire = datetime.utcnow() + timedelta(minutes=int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")))
+    result.update({"exp": expire})
+    return result
+
+def create_credential_exception():
+    return HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials", headers={"WWW-Authenticate": "Bearer"})

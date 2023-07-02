@@ -619,6 +619,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
   - now｜ローカルシステム時刻
   - サーバがアメリカで稼働していて、ユーザがヨーロッパからアクセスした場合、それぞれの地域の時間を使用してしまうと時間のずれが発生します。そのため、すべての時間計算はUTCを基準に行われることが多い
 ## Protecting Routes
+7:28:04
 ## Test Expired Token
 ## Fetching User in Protected Routes
 ## Postman advanced Features
