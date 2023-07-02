@@ -498,7 +498,6 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.refresh(result)
     return result
 ```
-## Refractor Hashing Logic
 ## Get User by ID
 ## FastAPI Routers
 ## Router Prefix

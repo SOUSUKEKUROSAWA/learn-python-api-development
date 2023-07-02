@@ -6,13 +6,10 @@ from psycopg2.extras import RealDictCursor
 from dotenv import load_dotenv
 import os
 from datetime import datetime, timedelta
-from . import models, schemas
+from . import models, schemas, utils
 from .database import engine, get_db
 from sqlalchemy.orm import Session
-from passlib.context import CryptContext
 load_dotenv()
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # create new tables
 models.Base.metadata.create_all(bind=engine)
@@ -80,7 +77,7 @@ def update_post(id: int, post: schemas.PostCreate, db: Session = Depends(get_db)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     user_dict = user.dict()
     # hash the password - user.password
-    hashed_password = pwd_context.hash(user.password)
+    hashed_password = utils.hash(user.password)
     user_dict['password'] = hashed_password
     # create user in db
     result = models.User(**user_dict)
