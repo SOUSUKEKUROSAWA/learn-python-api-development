@@ -508,6 +508,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     - 単一のアプリケーション全体を表します
     - 単体で完全なアプリケーションを形成します
 ## Router Prefix
+- 同じパス（`/posts`）などを何度も書くのは少し面倒
 ## Router Tags
 ## JWT Token Basics
 ## Login Process  
