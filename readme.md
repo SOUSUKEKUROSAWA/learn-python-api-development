@@ -632,8 +632,24 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     - ![](https://storage.googleapis.com/zenn-user-upload/119cb89bf6bb-20230708.png)
     - 何かのアクションのレスポンスを変数に設定するとかもできる
 # Section 9: Relationships
-## SQL Relationship Basics
 ## Postgres Foreign Keys
+- `TRUNCATE <table name> RESTART IDENTITY;`
+  - テーブル内のデータを全削除
+    - DELETEよりも高速で、シーケンスもリセットする
+    - ※ロールバックできないため注意
+- **外部キーの参照先のテーブルが削除された時の挙動**
+  - RESTRICT｜エラー発生（削除不可）
+    - 関連するデータが存在する限り、主要な行を削除できないことを保証したい時に使用する
+  - CASCADE｜関連するすべての外部キーの行も削除
+    - 親子関係（親が削除されると子も削除されるなど）を表したい時に使用する
+  - SET NULL|参照している行の外部キー値をNULLに設定
+    - 関連性がオプショナル（必須ではない）である場合に使用する
+      - 例
+        - 従業員とマネージャーの関係で、マネージャーが辞任（削除）した場合、従業員のマネージャーフィールドをNULLに設定する
+  - SET DEFAULT｜参照している行の外部キー値をその列のデフォルト値に設定
+    - デフォルトのバックアップ値がある場合に使用する
+      - 例
+        - 商品と供給業者の関係で、ある供給業者が倒産した場合、その商品の供給業者をデフォルトの供給業者に設定できる
 ## SQLAlchemy Foreign Keys
 ## Update Post Schema to include User
 ## Assigning Owner id when creating new post
