@@ -660,7 +660,6 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
   - 解決策
     - マイグレーションファイルでテーブル定義を管理する
     - 既存のテーブルを削除する
-## Update Post Schema to include User
 ## Assigning Owner id when creating new post
 ## Delete and Update only your own posts
 ## Only Retrieving Logged in User's posts
