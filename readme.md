@@ -651,6 +651,15 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
       - 例
         - 商品と供給業者の関係で、ある供給業者が倒産した場合、その商品の供給業者をデフォルトの供給業者に設定できる
 ## SQLAlchemy Foreign Keys
+- models.pyでカラムを新たに追加してもDBに反映されない問題
+  - 状況
+    - models.pyでカラムを新たに追加してもDBに反映されない
+  - 原因
+    - テーブルが既に作成されている場合，models.pyは読み込まれないから
+      - カラムが更新されていることに気づけない
+  - 解決策
+    - マイグレーションファイルでテーブル定義を管理する
+    - 既存のテーブルを削除する
 ## Update Post Schema to include User
 ## Assigning Owner id when creating new post
 ## Delete and Update only your own posts
