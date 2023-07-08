@@ -9,13 +9,13 @@ router = APIRouter(
     tags = ['Users']
 )
 
-@router.get("/", response_model=List[schemas.UserOut])
+@router.get("/", response_model=List[schemas.UserResponse])
 def get_users(db: Session = Depends(get_db)):
     result = db.query(models.User).all()
     return result
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut)
-def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.UserResponse)
+def create_user(user: schemas.UserRequest, db: Session = Depends(get_db)):
     user_dict = user.dict()
     # hash the password - user.password
     hashed_password = utils.hash(user.password)
@@ -27,7 +27,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.refresh(result)
     return result
 
-@router.get("/{id}", response_model=schemas.UserOut)
+@router.get("/{id}", response_model=schemas.UserResponse)
 def get_user(id: int, db: Session = Depends(get_db)):
     result = db.query(models.User).filter(models.User.id == id).first()
     if not result:

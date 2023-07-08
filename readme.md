@@ -431,9 +431,9 @@ def get_post(id: int):
   - DB内のテーブルを定義する
 ## Response Model
 - メソッドのレスポンスの形式を定義する
-- `response_model=schemas.Post`とした時にエラーが発生する理由
+- `response_model=schemas.PostResponse`とした時にエラーが発生する理由
   - 状況
-    - `response_model=schemas.Post`としてcreate_postメソッドを実行した時にエラーが発生
+    - `response_model=schemas.PostResponse`としてcreate_postメソッドを実行した時にエラーが発生
       - `value is not a valid dict (type=type_error.dict)`
   - 原因
     - レスポンスがSQLAlchemyモデルであるため，Pythonの辞書に変換（シリアライズ）できないこと
@@ -453,11 +453,11 @@ class Post(BaseModel):
   - 状況
     - get_postsメソッドを実行すると，ValidationErrorが発生
   - 原因
-    - `db.query(models.Post).all()`から返される結果がPostオブジェクトのリストにもかかわらず，`response_model=schemas.Post`と指定していたから
+    - `db.query(models.Post).all()`から返される結果がPostオブジェクトのリストにもかかわらず，`response_model=schemas.PostResponse`と指定していたから
   - 解決策
 ```diff
-- @app.get("/posts", response_model=schemas.Post)
-+ @app.get("/posts", response_model=List[schemas.Post])
+- @app.get("/posts", response_model=schemas.PostResponse)
++ @app.get("/posts", response_model=List[schemas.PostResponse])
 def get_posts(db: Session = Depends(get_db)):
     result = db.query(models.Post).all()
     return result
@@ -483,8 +483,8 @@ def get_posts(db: Session = Depends(get_db)):
     - userオブジェクトが関数引数で受け取ったimmutableなPydanticモデルのため
   - 解決策
 ```diff
-@app.post("/users", status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut)
-def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+@app.post("/users", status_code=status.HTTP_201_CREATED, response_model=schemas.UserResponse)
+def create_user(user: schemas.UserRequest, db: Session = Depends(get_db)):
 +   user_dict = user.dict()
     # hash the password - user.password
     hashed_password = pwd_context.hash(user.password)
