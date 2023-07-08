@@ -619,9 +619,11 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
   - now｜ローカルシステム時刻
   - サーバがアメリカで稼働していて、ユーザがヨーロッパからアクセスした場合、それぞれの地域の時間を使用してしまうと時間のずれが発生します。そのため、すべての時間計算はUTCを基準に行われることが多い
 ## Protecting Routes
-7:28:04
-## Test Expired Token
-## Fetching User in Protected Routes
+- 現状誰でもリクエスト送れてしまう
+  - Dependsで認証ユーザーを設定すると，未認証ユーザーははじかれるようになる
+- 認証済みユーザーとしてリクエストするには
+  - リクエストヘッダーに以下を追加
+    - `Authorization: <token type> <access token>`
 ## Postman advanced Features
 # Section 9: Relationships
 ## SQL Relationship Basics
