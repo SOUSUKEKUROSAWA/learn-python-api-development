@@ -625,6 +625,12 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
   - リクエストヘッダーに以下を追加
     - `Authorization: <token type> <access token>`
 ## Postman advanced Features
+- 環境ごとに変数を設定できる
+  - Environmentから変数を作成
+  - `{{variable}}`という方法で記述できる
+  - 動的に設定することも可能
+    - ![](https://storage.googleapis.com/zenn-user-upload/119cb89bf6bb-20230708.png)
+    - 何かのアクションのレスポンスを変数に設定するとかもできる
 # Section 9: Relationships
 ## SQL Relationship Basics
 ## Postgres Foreign Keys
