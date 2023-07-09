@@ -11,8 +11,8 @@ router = APIRouter(
 )
 
 @router.get("/", response_model=List[schemas.PostResponse])
-def get_posts(db: Session = Depends(get_db)):
-    result = db.query(models.Post).all()
+def get_posts(db: Session = Depends(get_db), limit: int = 10):
+    result = db.query(models.Post).limit(limit).all()
     return result
 
 @router.get("/my", response_model=List[schemas.PostResponse])
@@ -33,14 +33,6 @@ def create_post(post: schemas.PostRequest, db: Session = Depends(get_db), curren
     db.refresh(result) # to get result returned
     return result
 
-@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_post(id: int, db: Session = Depends(get_db), current_user: models.User = Depends(oauth2.get_current_user)):
-    post = get_post_by_id_or_404(id, db)
-    check_post_ownership(post, current_user)
-    db.delete(post)
-    db.commit()
-    return
-
 @router.put("/{id}", response_model=schemas.PostResponse)
 def update_post(id: int, updated_post: schemas.PostRequest, db: Session = Depends(get_db), current_user: models.User = Depends(oauth2.get_current_user)):
     post = get_post_by_id_or_404(id, db)
@@ -49,3 +41,11 @@ def update_post(id: int, updated_post: schemas.PostRequest, db: Session = Depend
     db.commit()
     result = get_post_by_id_or_404(id, db)
     return result
+
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_post(id: int, db: Session = Depends(get_db), current_user: models.User = Depends(oauth2.get_current_user)):
+    post = get_post_by_id_or_404(id, db)
+    check_post_ownership(post, current_user)
+    db.delete(post)
+    db.commit()
+    return
