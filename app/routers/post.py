@@ -1,5 +1,6 @@
 from fastapi import status, Depends, APIRouter
 from typing import List
+from sqlalchemy import func
 from .. import models, schemas, oauth2
 from sqlalchemy.orm import Session
 from ..database import get_db
@@ -10,9 +11,9 @@ router = APIRouter(
     tags = ["Posts"]
 )
 
-@router.get("/", response_model=List[schemas.PostResponse])
+@router.get("/", response_model=List[schemas.PostResponseWithVote])
 def get_posts(db: Session = Depends(get_db), limit: int = 10, skip: int = 0, search: str = ""):
-    result = db.query(models.Post).filter(models.Post.title.contains(search)).limit(limit).offset(skip).all()
+    result = db.query(models.Post, func.count(models.Vote.post_id).label("votes")).join(models.Vote, models.Vote.post_id == models.Post.id, isouter=True).group_by(models.Post.id).filter(models.Post.title.contains(search)).limit(limit).offset(skip).all()
     return result
 
 @router.get("/my", response_model=List[schemas.PostResponse])

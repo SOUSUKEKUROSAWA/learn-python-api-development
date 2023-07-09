@@ -18,6 +18,12 @@ class PostResponse(PostBase):
     class Config:
         orm_mode = True
 
+class PostResponseWithVote(BaseModel):
+    Post: PostResponse
+    votes: int
+    class Config:
+        orm_mode = True
+
 class UserRequest(BaseModel):
     email: EmailStr
     password: str
