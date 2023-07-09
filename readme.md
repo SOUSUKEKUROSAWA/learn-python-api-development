@@ -699,7 +699,6 @@ while True:
   - 誰がどの投稿にいいねしたかを記録する必要がある
   - 複合主キー
 - ![](https://storage.googleapis.com/zenn-user-upload/b1330d165538-20230709.png)
-## Votes Route
 ## SQL Joins
 ## Joins in SqlAlchemy
 ## Get One Post with Joins

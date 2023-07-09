@@ -1,6 +1,7 @@
 from datetime import datetime
 from pydantic import BaseModel, EmailStr
 from typing import Optional
+from enum import Enum
 
 class PostBase(BaseModel):
     title: str
@@ -34,3 +35,13 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     id: Optional[str] = None
+
+class Direction(Enum):
+    Add = 1
+    Delete = 0
+
+class VoteRequest(BaseModel):
+    post_id: int
+    dir: Direction
+    class Config:
+        orm_mode = True
