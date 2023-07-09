@@ -666,7 +666,6 @@ def create_user(user: schemas.UserRequest, db: Session = Depends(get_db)):
     - 既存のテーブルを削除する
 ## Sqlalchemy Relationships
 - postオブジェクトから直接紐づくuserオブジェクトが取得できるようになる
-## Query Parameters
 ## Cleanup our main.py file
 ## Environment Variables
 # Section 10: Vote/Like System
