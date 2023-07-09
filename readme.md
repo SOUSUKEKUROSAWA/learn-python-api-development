@@ -667,6 +667,24 @@ def create_user(user: schemas.UserRequest, db: Session = Depends(get_db)):
 ## Sqlalchemy Relationships
 - postオブジェクトから直接紐づくuserオブジェクトが取得できるようになる
 ## Cleanup our main.py file
+- DB接続のコードの省略
+  - SQLAlchemyのcreate_engineメソッドによって，最初のクエリが実行された段階で自動でDBへ接続されるようになるため，以下のコードは削除してOK
+  - また，SQLAlchemyは接続プールを管理する
+    - これにより、接続が必要なときには既存の接続を再利用し、必要なくなったときには自動的に閉じるため，接続や切断を手動で管理する必要がない
+```python
+while True:
+    if datetime.now() > end_time:
+        raise Exception("Could not connect to the database within 30 seconds")
+    try:
+        conn = psycopg2.connect(host=os.getenv("DB_HOST"), database=os.getenv("DB_NAME"), user=os.getenv("DB_USER"), password=os.getenv("DB_PASSWORD"), cursor_factory=RealDictCursor)
+        cursor = conn.cursor()
+        print("Database connection was successful")
+        break
+    except Exception as error:
+        print("Database connection failed")
+        print(error)
+        time.sleep(2)
+```
 ## Environment Variables
 # Section 10: Vote/Like System
 ## Vote/Like Theory
