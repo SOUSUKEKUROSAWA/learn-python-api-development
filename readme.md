@@ -700,6 +700,8 @@ while True:
   - 複合主キー
 - ![](https://storage.googleapis.com/zenn-user-upload/b1330d165538-20230709.png)
 ## SQL Joins
+- ![](https://storage.googleapis.com/zenn-user-upload/3a9be524e513-20230709.png)
+- https://www.postgresqltutorial.com/postgresql-tutorial/postgresql-joins/
 ## Joins in SqlAlchemy
 ## Get One Post with Joins
 # Section 11: Database Migration w/ Alembic
