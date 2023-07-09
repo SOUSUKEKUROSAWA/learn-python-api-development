@@ -686,6 +686,7 @@ while True:
         time.sleep(2)
 ```
 ## Environment Variables
+- Settingsクラスを定義して環境変数の型を定義することもできる
 # Section 10: Vote/Like System
 ## Vote/Like Theory
 ## Votes Table
