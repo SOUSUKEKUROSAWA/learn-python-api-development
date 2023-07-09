@@ -664,6 +664,8 @@ def create_user(user: schemas.UserRequest, db: Session = Depends(get_db)):
   - 解決策
     - マイグレーションファイルでテーブル定義を管理する
     - 既存のテーブルを削除する
+      - 既存のテーブルのデータが特に必要ない場合はこちらでOK
+      - 開発環境とか
 ## Sqlalchemy Relationships
 - postオブジェクトから直接紐づくuserオブジェクトが取得できるようになる
 ## Cleanup our main.py file
@@ -689,7 +691,14 @@ while True:
 - Settingsクラスを定義して環境変数の型を定義することもできる
 # Section 10: Vote/Like System
 ## Vote/Like Theory
+- ユーザーは投稿にいいねできる
+- いいねは1投稿につき１回のみ
+- 各投稿は、いいねの総数も取得する必要がある。
 ## Votes Table
+- post_idとuser_idのペアが必要
+  - 誰がどの投稿にいいねしたかを記録する必要がある
+  - 複合主キー
+- ![](https://storage.googleapis.com/zenn-user-upload/b1330d165538-20230709.png)
 ## Votes Sqlalchemy
 ## Votes Route
 ## SQL Joins
