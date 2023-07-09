@@ -15,17 +15,22 @@ def get_posts(db: Session = Depends(get_db)):
     result = db.query(models.Post).all()
     return result
 
+@router.get("/{id}", response_model=schemas.PostResponse)
+def get_post(id: int, db: Session = Depends(get_db)):
+    result = get_post_by_id_or_404(id, db)
+    return result
+
+@router.get("/my", response_model=List[schemas.PostResponse])
+def get_my_posts(db: Session = Depends(get_db), current_user: models.User = Depends(oauth2.get_current_user)):
+    result = db.query(models.Post).filter(models.Post.user_id == current_user.id).all()
+    return result
+
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.PostResponse)
 def create_post(post: schemas.PostRequest, db: Session = Depends(get_db), current_user: models.User = Depends(oauth2.get_current_user)):
     result = models.Post(**post.dict(), user_id=current_user.id)
     db.add(result)
     db.commit()
     db.refresh(result) # to get result returned
-    return result
-
-@router.get("/{id}", response_model=schemas.PostResponse)
-def get_post(id: int, db: Session = Depends(get_db)):
-    result = get_post_by_id_or_404(id, db)
     return result
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)

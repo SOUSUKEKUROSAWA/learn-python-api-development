@@ -15,6 +15,13 @@ def get_users(db: Session = Depends(get_db)):
     result = db.query(models.User).all()
     return result
 
+@router.get("/{id}", response_model=schemas.UserResponse)
+def get_user(id: int, db: Session = Depends(get_db)):
+    result = db.query(models.User).filter(models.User.id == id).first()
+    if not result:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"user with id: {id} was not found")
+    return result
+
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.UserResponse)
 def create_user(user: schemas.UserRequest, db: Session = Depends(get_db)):
     user_dict = user.dict()
@@ -26,11 +33,4 @@ def create_user(user: schemas.UserRequest, db: Session = Depends(get_db)):
     db.add(result)
     db.commit()
     db.refresh(result)
-    return result
-
-@router.get("/{id}", response_model=schemas.UserResponse)
-def get_user(id: int, db: Session = Depends(get_db)):
-    result = db.query(models.User).filter(models.User.id == id).first()
-    if not result:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"user with id: {id} was not found")
     return result
