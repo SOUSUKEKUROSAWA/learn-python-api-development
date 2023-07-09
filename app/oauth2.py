@@ -19,7 +19,6 @@ def create_access_token(data: dict):
     return result
 
 def verify_access_token(token: str, credential_exception):
-    # tokenが不正または期限切れである可能性があるためtryで囲う（decodeプロセスは外部入力に依存する）
     try:
         payload = jwt.decode(token, os.getenv("SECRET_KEY"), algorithms=[os.getenv("ALGORITHM")])
         id: str = payload.get("user_id")
@@ -27,7 +26,7 @@ def verify_access_token(token: str, credential_exception):
             raise credential_exception
         result = schemas.TokenData(id=id) # veridation & formatting
         return result
-    except JWTError: # JWTErrorが発生したときのみ以下を実行
+    except JWTError:
         raise credential_exception
 
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
