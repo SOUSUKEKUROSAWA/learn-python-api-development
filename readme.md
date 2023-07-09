@@ -704,6 +704,16 @@ while True:
 - https://www.postgresqltutorial.com/postgresql-tutorial/postgresql-joins/
 # Section 11: Database Migration w/ Alembic
 ## What is a database migration tool
+- マイグレーションを使用する目的
+  - データベースのテーブル構造をGitで簡単に変更を追跡したり，ロールバックしたりできる
+    - インクリメンタルに変更を追跡するため，過去のどの時点でもロールバックできる
+- Alembic
+  - https://alembic.sqlalchemy.org/en/latest/
+  - DBモデルをSQLAlchemyから自動でプルしてきて，テーブルを生成することができる
+  - `pip install alembic`
+  - `alembic --help`
+  - `alembic init <directory name>`
+    - 初期化．alembicディレクトリが作成される
 ## Alembic Setup
 ## Alembic First Revision
 ## Alembic Rollback database Schema
