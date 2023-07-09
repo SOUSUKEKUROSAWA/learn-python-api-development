@@ -702,7 +702,6 @@ while True:
 ## SQL Joins
 - ![](https://storage.googleapis.com/zenn-user-upload/3a9be524e513-20230709.png)
 - https://www.postgresqltutorial.com/postgresql-tutorial/postgresql-joins/
-## Get One Post with Joins
 # Section 11: Database Migration w/ Alembic
 ## What is a database migration tool
 ## Alembic Setup
