@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import os
 from jose import JWTError, jwt
-from . import schemas
+from .. import schemas
 
 def verify_access_token(token: str, credential_exception):
     try:
