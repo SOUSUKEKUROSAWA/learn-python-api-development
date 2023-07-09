@@ -664,8 +664,8 @@ def create_user(user: schemas.UserRequest, db: Session = Depends(get_db)):
   - 解決策
     - マイグレーションファイルでテーブル定義を管理する
     - 既存のテーブルを削除する
-## Only Retrieving Logged in User's posts
 ## Sqlalchemy Relationships
+- postオブジェクトから直接紐づくuserオブジェクトが取得できるようになる
 ## Query Parameters
 ## Cleanup our main.py file
 ## Environment Variables
