@@ -822,6 +822,8 @@ Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has b
 # Section 13: Deployment Heroku
 ## Heroku intro
 ## Create Heroku App
+- herokuにログインしてHerokuアプリを作成すると`git heroku`コマンドが使用できるようになる
+  - `git heroku main`でコードをHeroku上にプッシュできる
 ## Heroku procfile
 ## Adding a Postgres database
 ## Environment Variables in Heroku
