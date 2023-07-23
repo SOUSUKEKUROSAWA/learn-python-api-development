@@ -782,6 +782,30 @@ while True:
       - 差分が見つかった場合、その差分を解消するためのSQL文を生成し、新しいマイグレーションスクリプトとして保存します。
 # Section 12: Pre Deployment Checklist
 ## What is CORS?????
+- https://fastapi.tiangolo.com/ja/tutorial/cors/
+- ブラウザの検証モードでのfetchリクエスト
+  - `fetch('http://localhost:8000/').then(res => res.json()).then(console.log)`
+  - CORSエラーが発生する
+```
+Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
+```
+- postmanからの`http://localhost:8000/`へのGETリクエスト
+  - 正常にレスポンスが返ってくる
+- CORSとは
+  - Cross Origin Resource Sharing
+  - 特定のドメインのWebブラウザから異なるドメインのサーバへのリクエストを許可する仕組み
+    - サーバ側で設定を行う必要あり
+      - 通常はレスポンスヘッダにAccess-Control-Allow-Originというヘッダを設定し、どのオリジンからのアクセスを許可するかを指定する
+  - デフォルトでは，APIは同一ドメインからのリクエストしか許可しないようになっている
+- fetchでアクセスするとCORSエラーが発生して，ブラウザにURLを入力する形でアクセスすると正常にアクセスできる理由
+  - ブラウザのURL入力欄からアクセスする場合と、JavaScriptのfetch関数を使ってアクセスする場合とで、同一オリジンポリシーの適用が異なるため
+    - ブラウザのURL入力欄からアクセスする場合は、ユーザーが直接操作しているため、セキュリティの制限は緩和される
+    - 一方、JavaScriptのfetch関数を使ってプログラムからアクセスする場合は、同一オリジンポリシーが適用されます。したがって、異なるオリジン（google.com）からのリクエストは、通常はブロックされる
+- APIを一般に公開するような場合のCORS
+  - すべてのオリジンからのアクセスを許可する
+  - APIキーによる認証を行う
+    - APIを利用するクライアントがそのAPIキーをリクエストに含めることで、APIのサーバー側がそのリクエストが許可されたクライアントからのものであることを確認し、適切にリクエストに応答する仕組み
+      - この仕組みにより，特定ユーザーへのアクセス制限やリクエスト数に応じた課金などもできるようになる
 ## Git PreReqs
 ## Git Install
 ## Github
