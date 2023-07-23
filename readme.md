@@ -842,6 +842,8 @@ Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has b
         - Herokuのアドオンは、Herokuアプリケーションに追加機能を提供するもの
         - heroku-postgresqlはPostgreSQLデータベースを提供するアドオンで、hobby-devはその中の無料の開発プランを指している
 ## Environment Variables in Heroku
+- 最後に環境変数をHerokuのダッシュボードに設定する
+- APIへのアクセスが行えるようになった
 ## Alembic migrations on Heroku Postgres instance
 ## Pushing changed to production
 # Section 14: Deployment Ubuntu
