@@ -780,7 +780,6 @@ while True:
       - `target_metadata = Base.metadata`で、Alembicに対象のデータベースモデルを通知しています。Base.metadataはSQLAlchemy ORMで使用されるすべてのモデルクラスのメタデータ（テーブル名、カラム名、データ型等）を含んでいます。
       - `alembic revision --autogenerate`コマンドが実行されると、Alembicは現在のデータベーススキーマを検査し、モデルクラス（Base.metadata）で定義されたスキーマと比較します。
       - 差分が見つかった場合、その差分を解消するためのSQL文を生成し、新しいマイグレーションスクリプトとして保存します。
-## Disable SqlAlchemy create Engine
 # Section 12: Pre Deployment Checklist
 ## What is CORS?????
 ## Git PreReqs
