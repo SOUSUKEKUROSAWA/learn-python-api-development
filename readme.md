@@ -825,6 +825,15 @@ Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has b
 - herokuにログインしてHerokuアプリを作成すると`git heroku`コマンドが使用できるようになる
   - `git heroku main`でコードをHeroku上にプッシュできる
 ## Heroku procfile
+- ただコードをHerokuに反映しただけではアプリは動作しない
+  - Heroku側はサーバの起動方法を知らない
+    - procfileに設定を記述することで，実行コマンドなどをHerokuに伝える
+- Procfileというファイルをローカルで作成して，以下を追記する
+  - `<process type>: <command>`
+    - `web: uvicorn app.main:app --host=0.0.0.0 --port=${PORT:-5000}`
+- アプリがうまく起動しない場合（リロードが全然終わらない場合など）
+  - ログ出力して調べる
+    - `heroku logs --help`
 ## Adding a Postgres database
 ## Environment Variables in Heroku
 ## Alembic migrations on Heroku Postgres instance
