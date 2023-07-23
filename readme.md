@@ -845,6 +845,11 @@ Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has b
 - 最後に環境変数をHerokuのダッシュボードに設定する
 - APIへのアクセスが行えるようになった
 ## Alembic migrations on Heroku Postgres instance
+- ただ，環境変数まで設定してもGETリクエストしかできない
+  - 他のメソッドは500 Internal Server Errorになってしまう
+    - 原因｜データベース内にテーブルが作成されていないから
+- `heroku run "alembic upgrade head"`
+  - herokuインスタンス上でマイグレーションを実行
 ## Pushing changed to production
 # Section 14: Deployment Ubuntu
 ## Create an Ubuntu VM
