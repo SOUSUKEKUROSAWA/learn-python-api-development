@@ -23,7 +23,7 @@ if config.config_file_name is not None:
 target_metadata = Base.metadata
 
 # get the sqlalchemy url from the environment
-sqlalchemy_url = f"postgresql+psycopg2://{settings.db_user}:{settings.db_password}@{settings.db_host}/{settings.db_name}"
+sqlalchemy_url = f'postgresql+psycopg2://{settings.db_user}:{settings.db_password}@{settings.db_host}/{settings.db_name}'
 
 # override the alembic.ini to take the url from the environment
 config.set_main_option('sqlalchemy.url', sqlalchemy_url)

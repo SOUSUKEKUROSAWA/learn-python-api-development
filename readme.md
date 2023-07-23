@@ -751,6 +751,15 @@ while True:
   - script.py.mako
     - マイグレーションスクリプトのテンプレートです。新しいマイグレーションを作成する際には、このテンプレートが使用されます。テンプレートの中身は、マイグレーションのメタデータ（revision ID、revisesなど）、アップグレードとダウングレードの方法を定義する関数から成ります。アップグレード関数はデータベースを新しいバージョンに更新し、ダウングレード関数はそれを元のバージョンに戻します。
 ## Alembic First Revision
+- `alembic revision -m "create posts table"`
+- https://alembic.sqlalchemy.org/en/latest/api/ddl.html#ddl-internals
+- `alembic current`
+  - 現在のデータベースがどのマイグレーションバージョンに適用されているかを示します。
+- `alembic upgrade <revision id>`
+  - ex.｜`alembic upgrade b8ae9a96eb07`
+- alembic_vresionテーブル
+  - version_numカラムに実行された最新のrevision idを保持する
+  - バージョン管理を行うテーブル
 ## Alembic Rollback database Schema
 ## Alembic finishing up the rest of the schema
 ## Disable SqlAlchemy create Engine
