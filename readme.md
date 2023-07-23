@@ -851,6 +851,9 @@ Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has b
 - `heroku run "alembic upgrade head"`
   - herokuインスタンス上でマイグレーションを実行
 ## Pushing changed to production
+- `git push origin main`&`git push heroku main`
+- データベーススキーマに変更を加えたい場合
+  - `heroku run alembic upgrade head`
 # Section 14: Deployment Ubuntu
 ## Create an Ubuntu VM
 ## Update packages
