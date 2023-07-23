@@ -761,6 +761,13 @@ while True:
   - version_numカラムに実行された最新のrevision idを保持する
   - バージョン管理を行うテーブル
 ## Alembic Rollback database Schema
+- `alembic revision -m "add content column to posts table"`
+- `alembic heads`
+  - 未実施のマイグレーションも含めた最新リビジョンの表示
+- `alembic upgrade head`
+  - 最新のリビジョンまでマイグレーションを実施
+- `alembic downgrade <revision id（ここで指定したバージョンまで戻す）｜戻したいリビジョン数>`
+  - ex.｜`alembic downgrade b8ae9a96eb07`｜`alembic downgrade -1`
 ## Alembic finishing up the rest of the schema
 ## Disable SqlAlchemy create Engine
 # Section 12: Pre Deployment Checklist
