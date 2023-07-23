@@ -755,8 +755,8 @@ while True:
 - https://alembic.sqlalchemy.org/en/latest/api/ddl.html#ddl-internals
 - `alembic current`
   - 現在のデータベースがどのマイグレーションバージョンに適用されているかを示します。
-- `alembic upgrade <revision id>`
-  - ex.｜`alembic upgrade b8ae9a96eb07`
+- `alembic upgrade <revision id（ここで指定したバージョンまで進む）｜進みたいリビジョン数>｜head`
+  - ex.｜`alembic upgrade b8ae9a96eb07`｜`alembic upgrade +1`｜`alembic upgrade head`
 - alembic_vresionテーブル
   - version_numカラムに実行された最新のrevision idを保持する
   - バージョン管理を行うテーブル
@@ -769,6 +769,17 @@ while True:
 - `alembic downgrade <revision id（ここで指定したバージョンまで戻す）｜戻したいリビジョン数>`
   - ex.｜`alembic downgrade b8ae9a96eb07`｜`alembic downgrade -1`
 ## Alembic finishing up the rest of the schema
+- `alembic revision -m "create users table"`
+- `alembic upgrade head`
+- `alembic revision -m "add foreign-key to posts table"`
+- `alembic revision -m "add last few columns to posts table"`
+- `alembic upgrade +1`
+- `alembic revision --autogenerate -m "auto-vote"`
+  - 現在のデータベーススキーマとモデルクラスの定義を比較し、データベーススキーマに反映させるべき変更を自動的に検出して新しいマイグレーションスクリプトを生成します。
+    - 仕組み
+      - `target_metadata = Base.metadata`で、Alembicに対象のデータベースモデルを通知しています。Base.metadataはSQLAlchemy ORMで使用されるすべてのモデルクラスのメタデータ（テーブル名、カラム名、データ型等）を含んでいます。
+      - `alembic revision --autogenerate`コマンドが実行されると、Alembicは現在のデータベーススキーマを検査し、モデルクラス（Base.metadata）で定義されたスキーマと比較します。
+      - 差分が見つかった場合、その差分を解消するためのSQL文を生成し、新しいマイグレーションスクリプトとして保存します。
 ## Disable SqlAlchemy create Engine
 # Section 12: Pre Deployment Checklist
 ## What is CORS?????
