@@ -835,6 +835,12 @@ Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has b
   - ログ出力して調べる
     - `heroku logs --help`
 ## Adding a Postgres database
+- Procfileまで作成してもまだアプリは動かない
+  - 接続するDBがないから
+    - Herokuサーバ上にDBMSをインストールする必要がある
+      - `heroku addons:docs heroku-postgresql:hobby-dev`
+        - Herokuのアドオンは、Herokuアプリケーションに追加機能を提供するもの
+        - heroku-postgresqlはPostgreSQLデータベースを提供するアドオンで、hobby-devはその中の無料の開発プランを指している
 ## Environment Variables in Heroku
 ## Alembic migrations on Heroku Postgres instance
 ## Pushing changed to production
