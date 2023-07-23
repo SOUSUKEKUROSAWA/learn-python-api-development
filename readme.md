@@ -812,8 +812,13 @@ Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has b
     - インストールしたパッケージはrequirements.txtで管理する
       - `pip install -r requirements.txt`
         - requirements.txtに書かれているパッケージをすべてインストール
-## Git Install
 ## Github
+- `git branch -M main`
+  - 現在のブランチの名前を強制的（Mオプション）にmainに変更
+- `git remote add origin https://github.com/~~/~~.git`
+  - 新たにリモートリポジトリを設定
+- `git config --global user.email ~~~`と`git config --global user.name ~~~`
+  - コミットに必要な情報である作成者の名前とメールアドレスのグローバル（マシン上の全てのリポジトリに適用される）登録
 # Section 13: Deployment Heroku
 ## Heroku intro
 ## Create Heroku App
