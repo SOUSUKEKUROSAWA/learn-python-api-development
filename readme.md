@@ -807,6 +807,11 @@ Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has b
     - APIを利用するクライアントがそのAPIキーをリクエストに含めることで、APIのサーバー側がそのリクエストが許可されたクライアントからのものであることを確認し、適切にリクエストに応答する仕組み
       - この仕組みにより，特定ユーザーへのアクセス制限やリクエスト数に応じた課金などもできるようになる
 ## Git PreReqs
+- .gitignore
+  - `pip freeze > requirements.txt`
+    - インストールしたパッケージはrequirements.txtで管理する
+      - `pip install -r requirements.txt`
+        - requirements.txtに書かれているパッケージをすべてインストール
 ## Git Install
 ## Github
 # Section 13: Deployment Heroku
