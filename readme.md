@@ -856,6 +856,9 @@ Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has b
   - `heroku run alembic upgrade head`
 # Section 14: Deployment Ubuntu
 ## Create an Ubuntu VM
+- Digital Oceanでアプリケーションをホスティングする
+  - 月5ドルで最安値だから
+- VMが作成され，IPが割り当てられる
 ## Update packages
 ## Install Python
 ## Install Postgres & setup password
