@@ -869,8 +869,13 @@ Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has b
   - pipのインストールを実行
   - virtualenvのインストール
   - postgresqlのインストール
-## Postgres Config
 ## Create new user and setup python environment
+- `git clone https://~~ .`
+  - VM内でPythonの仮想環境を作成し，そこにGitHub上のコードをクローンする
+- `pip install -r requirements.txt`
+  - requirements.txtをもとにパッケージをインストール
+- `uvicorn app.main:app`
+  - サーバーを起動
 ## Environment Variables
 ## Alembic migrations on production database
 ## Gunicorn
