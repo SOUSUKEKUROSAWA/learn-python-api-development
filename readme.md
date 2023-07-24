@@ -888,6 +888,13 @@ Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has b
 - ただ，ここまでの設定方法だとサーバーを再起動すると設定した環境変数は消えてしまう
   - 起動時に実行されるスクリプト`.profile`に環境変数を設定するコマンドを登録しておく
 ## Alembic migrations on production database
+- マイグレーションファイルは既にクローンしているので，単にマイグレーションコマンドを実行するだけでいい
+  - `alembic upgrade head`
+- `uvicorn --host 0.0.0.0 app.main:app`
+  - すべてのIPアドレスからの接続を受け入れる
+- ただ，このままでは自動でリスタートしたりはできない
+  - 一旦処理が停止したら再度手動で起動しないといけない状態
+    - Gunicornというプロセスマネージャーを利用する
 ## Gunicorn
 ## Creating a Systemd service
 ## NGINX
