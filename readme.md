@@ -877,6 +877,16 @@ Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has b
 - `uvicorn app.main:app`
   - サーバーを起動
 ## Environment Variables
+- `export ENV=var`
+  - `printenv`
+    - 設定されている環境変数の出力
+  - `unset ENV`
+    - 環境変数の設定を削除
+- `vi .env`
+- `set -o allexport; source <path to .env>; set +o allexport`
+  - このやり方でも環境変数を設定できる
+- ただ，ここまでの設定方法だとサーバーを再起動すると設定した環境変数は消えてしまう
+  - 起動時に実行されるスクリプト`.profile`に環境変数を設定するコマンドを登録しておく
 ## Alembic migrations on production database
 ## Gunicorn
 ## Creating a Systemd service
