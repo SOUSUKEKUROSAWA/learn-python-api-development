@@ -860,8 +860,15 @@ Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has b
   - 月5ドルで最安値だから
 - VMが作成され，IPが割り当てられる
 ## Update packages
-## Install Python
-## Install Postgres & setup password
+- VMにはSSHで接続する
+  - `ssh root@<ip of ubuntu VM>`
+- なぜVM新規作成後にパッケージをアップデートするのか
+  - セキュリティを維持し，最新の機能を利用するため
+- `apt update && apt upgrade`
+  - python3.8以上がインストールされていることを確認する
+  - pipのインストールを実行
+  - virtualenvのインストール
+  - postgresqlのインストール
 ## Postgres Config
 ## Create new user and setup python environment
 ## Environment Variables
