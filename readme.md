@@ -896,6 +896,19 @@ Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has b
   - 一旦処理が停止したら再度手動で起動しないといけない状態
     - Gunicornというプロセスマネージャーを利用する
 ## Gunicorn
+- `pip install gunicorn`
+  - エラーが発生する場合
+    - `pip install httptools`と`pip install uvtool`で大抵解消する
+- `gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app --bind 0.0.0.0:800`
+- Gunicornとは
+  - Pythonで書かれたWSGIサーバ
+    - WSGI（Web Server Gateway Interface）はPythonにおけるWebサーバーとWebアプリケーションの間の標準的なインターフェース
+  - 各ワーカープロセスが独自のアプリケーションインスタンスをホスト
+    - 一つのサーバ何で複数のプロセスを並列させる
+    - 入ってくるリクエストを並列に処理
+      - ワーカーの数は通常、サーバーのCPUコア数に依存する
+      - このようにワーカープロセスを使うことで、1つのサーバー上でリソースをより効率的に利用し、性能を向上させることが可能になります。
+    - 親プロセスが一つあり，そこがリクエストをさばいてる
 ## Creating a Systemd service
 ## NGINX
 ## Setting up Domain name
