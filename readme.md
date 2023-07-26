@@ -896,6 +896,9 @@ Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has b
   - 一旦処理が停止したら再度手動で起動しないといけない状態
     - Gunicornというプロセスマネージャーを利用する
 ## Gunicorn
+- PythonのHTTPサーバーの一つ
+  - HTTPリクエストを処理できる
+  - Uvicornは単一のワーカープロセスしか起動できないのに対し，Gunicornは複数のワーカープロセスを管理できる
 - `pip install gunicorn`
   - エラーが発生する場合
     - `pip install httptools`と`pip install uvtool`で大抵解消する
@@ -910,6 +913,14 @@ Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has b
       - このようにワーカープロセスを使うことで、1つのサーバー上でリソースをより効率的に利用し、性能を向上させることが可能になります。
     - 親プロセスが一つあり，そこがリクエストをさばいてる
 ## Creating a Systemd service
+- gunicorn.service
+- systemd
+  - Linuxオペレーティングシステムのためのシステムとサービスマネージャ
+    - システムの初期化（ブートアップ）を担当し、システム起動時に必要なバックグラウンドサービス（デーモン）の起動や管理を行う
+- systemdを利用する理由
+  - システムの起動時に自動的にGunicorn（とそれによりホストされるアプリケーション）が起動するように設定できるから
+  - 何らかの理由でGunicornプロセスが終了した場合でも、systemdが自動的にそれを再起動する
+  - アプリケーションのダウンタイムを最小限に抑えられる
 ## NGINX
 ## Setting up Domain name
 ## SSL/HTTPS
