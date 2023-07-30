@@ -1007,6 +1007,16 @@ Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has b
 - 理想はこれらのプロセスがCI/CDパイプラインで自動化されていること
 # Section 15: Docker
 ## Dockerfile
+- pythonのベースイメージから始める
+- WORKDIR
+  - 後続のRUN、CMD、ENTRYPOINT、COPY、ADD命令がここで指定したディレクトリで実行される
+- requirements.txtを他のファイルより先にコピーする理由
+  - Dockerfileに書かれた処理は，実行時に1行ずつキャッシュされていく
+  - パッケージへの変更とアプリケーションコードの変更を分離させておいた方が効率的なキャッシュの利用ができるから先にrequirements.txtをコピーして依存関係のインストールをしている
+    - `COPY requirements.txt ./`の代わりに`COPY . .`を依存関係のインストールより前に実行してしまうとアプリケーションコードに変更があるたびに依存関係のインストールも再実行されてしまう
+      - 依存関係のインストールは時間のかかる作業だから無駄に実行したくない
+- `docker build -t fastapi <directory path of Dockerfile>`
+  - ex.｜`docker build -t fastapi .`
 ## Docker Compose
 ## Postgres Container
 ## Bind Mounts
