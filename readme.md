@@ -966,6 +966,10 @@ Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has b
       - HTTPでアクセスしてもHTTPSにリダイレクトとする設定
   - https://certbot.eff.org/instructions?ws=nginx&os=ubuntufocal
 ## NGINX enable
+- `systemctl status nginx`
+  - NGINXの自動起動が有効になっているか確認
+- `systemctl enable nginx`
+  - 自動起動の有効化
 ## Firewall
 ## Pushing code changes to Production
 # Section 15: Docker
