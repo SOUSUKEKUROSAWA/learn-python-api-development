@@ -971,6 +971,26 @@ Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has b
 - `systemctl enable nginx`
   - 自動起動の有効化
 ## Firewall
+- Firewall，NGINX，Gunicornの関係性
+  - Firewallは最前線（最も低レベルなレイヤーで）でシステムを外部からの不適切なアクセスから保護
+    - すべてのインバウンドおよびアウトバウンドトラフィックを管理
+    - システム全体のセキュリティポリシーを管理し、不正なトラフィックや攻撃を防ぐ役割を果たす
+  - NGINXは入ってきたリクエストを適切にルーティング
+    - アクセス制御なども行えるが，それはHTTPレベルでのもので，PレベルやTCP/UDPレベルでの通信を管理することはできない
+  - GunicornはPythonアプリケーションと通信を行う
+- ufw
+  - "Uncomplicated Firewall"の略で、Linuxにおけるファイアウォールの設定を容易に行うためのコマンドラインベースのツール
+- `sudo ufw status`
+  - active/inactiveの確認
+- `sudo ufw allow http`｜`sudo ufw allow https`｜`sudo ufw allow ssh`｜`sudo ufw allow 5432`（ポート5432へのトラフィックの許可．Postgresのトラフィックのこと）
+  - それぞれのトラフィックの許可
+    - IPアドレスはネットワーク上のコンピュータを識別し，ポート番号はコンピュータ内のソケットを識別する
+- `sudo ufw enable`
+  - ファイアウォールを有効化
+- `sudo ufw status`
+  - activeになっていることの確認
+- `sudo ufw delete allow http`
+  - httpのトラフィックの許可の設定を削除する
 ## Pushing code changes to Production
 # Section 15: Docker
 ## Dockerfile
