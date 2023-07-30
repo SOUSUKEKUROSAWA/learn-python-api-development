@@ -992,6 +992,19 @@ Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has b
 - `sudo ufw delete allow http`
   - httpのトラフィックの許可の設定を削除する
 ## Pushing code changes to Production
+- 変更したコードを反映させる方法
+  - ローカル開発環境
+    - `git push origin main`
+  - プロダクションサーバ
+    - `cd app/src/`
+      - アプリケーションコードがあるディレクトリに移動
+    - `git pull`
+      - GitHubから最新コードをプル
+    - `pip install -r requirements.txt`
+      - 新しいパッケージを導入した場合
+    - `sudo systemctl restart api`
+      - システムの最起動
+- 理想はこれらのプロセスがCI/CDパイプラインで自動化されていること
 # Section 15: Docker
 ## Dockerfile
 ## Docker Compose
