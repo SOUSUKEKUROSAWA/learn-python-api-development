@@ -922,6 +922,22 @@ Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has b
   - 何らかの理由でGunicornプロセスが終了した場合でも、systemdが自動的にそれを再起動する
   - アプリケーションのダウンタイムを最小限に抑えられる
 ## NGINX
+- ![](https://storage.googleapis.com/zenn-user-upload/d2e70c1a1b4f-20230729.png)
+- オープンソースのWebサーバ、リバースプロキシサーバ、ロードバランサー、メールプロキシサーバー、そして一般的なTCP/UDPプロキシサーバーとして機能するソフトウェア
+- 特に同時接続数が多いウェブサイトに対して高いパフォーマンスを発揮し、メモリ使用量を最小限に抑える設計がされている
+- `sudo apt install nginx -y`
+- `cat /etc/nginx/sites-available/default`
+  - 設定ファイル
+    - root
+      - ここ設定されているパスがNGINXがデフォルトで見に行っているパス
+    - server_name
+      - アプリケーションのドメイン名が入る
+    - location
+      - `location / { ... }`
+        - ルートパス配下（すべてのリクエスト）に対する設定
+        - proxy_pass
+          - 受け取ったリクエストをどのアドレスに送信するかを定義
+- まだHTTPSを導入する必要がある
 ## Setting up Domain name
 ## SSL/HTTPS
 ## NGINX enable
