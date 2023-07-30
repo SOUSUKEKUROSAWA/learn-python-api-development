@@ -899,6 +899,11 @@ Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has b
 - PythonのHTTPサーバーの一つ
   - HTTPリクエストを処理できる
   - Uvicornは単一のワーカープロセスしか起動できないのに対し，Gunicornは複数のワーカープロセスを管理できる
+  - 実体は単一のサーバー上で複数のプロセスを並行で扱えるようにマルチプロセスアーキテクチャで設計され，Pythonで実装されたHTTPサーバー
+    - マルチプロセスアーキテクチャ
+      - 並行処理を可能にするアーキテクチャ
+      - 単一のCPUでそれぞれのプロセスに割り当てるCPU時間をコントロールすることで，あたかも同時に複数プロセスを処理しているように見せる技術
+        - それに対して並列処理は複数のCPUでプロセスを実際に同時進行させる
 - `pip install gunicorn`
   - エラーが発生する場合
     - `pip install httptools`と`pip install uvtool`で大抵解消する
@@ -951,6 +956,15 @@ Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has b
   - ウェブサーバーにSSL証明書を設定する
     - 最後に、SSL証明書をウェブサーバーに設定する必要があります。これにより、ウェブサーバーは安全なHTTPS接続を提供できます。
 ## SSL/HTTPS
+- certbot
+  - Certbotは、Let's Encryptという無料のSSL/TLS証明書を発行するサービスと組み合わせて使用するためのツールです。
+  - Let's Encryptは自動化されたオープンソースの証明書認証局(CA)で、ウェブサイトの安全な接続を維持するために必要なSSL/TLS証明書を発行します。
+  - Certbotはこのプロセスを自動化し、ウェブサーバーの設定を行い、証明書を自動的に更新する機能を提供します。
+- certbotのガイドラインに則ってコマンドを実行していくと，SSL証明書の発行とウェブサーバーへのSSL証明書の設定を自動で行ってくれる
+  - `/etc/nginx/sites-available/default`を自動で修正してくれる
+    - HTTPSへのリダイレクトの設定など
+      - HTTPでアクセスしてもHTTPSにリダイレクトとする設定
+  - https://certbot.eff.org/instructions?ws=nginx&os=ubuntufocal
 ## NGINX enable
 ## Firewall
 ## Pushing code changes to Production
