@@ -1018,6 +1018,16 @@ Access to fetch at 'http://localhost:8000/' from origin 'https://zenn.dev' has b
 - `docker build -t fastapi <directory path of Dockerfile>`
   - ex.｜`docker build -t fastapi .`
 ## Docker Compose
+- Dockerfileから作成したイメージを実行する際のコマンドなどの各種設定を記述するファイル
+- services
+  - 1サービス，1コンテナのイメージ
+- ports
+  - ホストマシンとコンテナのポートマッピングの設定
+```yml
+ports:
+  - <port on localhost>:<port on container>
+```
+- `docker compose up -d`
 ## Postgres Container
 ## Bind Mounts
 ## Dockerhub
