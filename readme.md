@@ -1029,6 +1029,11 @@ ports:
 ```
 - `docker compose up -d`
 ## Postgres Container
+- ボリュームを定義することでデータの永続化ができる理由
+  - ボリュームはDockerホスト上のファイルシステムに存在するため，コンテナのライフサイクルから独立している（コンテナが削除されても残り続ける）から
+    - コンテナが再作成されるたびにComposeファイルからボリュームが読み込まれてコンテナ内の指定されたディレクトリにマッピングされるからコンテナのライフサイクルに関わらず同じデータを使い続けられる
+- コンテナ間の依存関係を定義して，コンテナの起動順序を定義する
+  - ![](https://storage.googleapis.com/zenn-user-upload/a5f0038c3e1c-20230813.png)
 ## Bind Mounts
 ## Dockerhub
 ## Production vs Development

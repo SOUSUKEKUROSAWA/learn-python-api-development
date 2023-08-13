@@ -2,7 +2,18 @@ version: '3'
 services:
   api:
     build: .
+    depends_on:
+      - postgres
     ports:
       - "8000:8000"
     env_file:
       - ./.env
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=Souhal0517
+      - POSTGRES_DB=learn-python-api-development
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+volumes:
+  postgres-db:
