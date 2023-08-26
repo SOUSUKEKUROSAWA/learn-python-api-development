@@ -1131,8 +1131,17 @@ ports:
   - キャプチャされたstdoutとstderr出力を無効にする
     - デフォルトでは、テスト実行中のstdoutおよびstderrをキャプチャして、テストが失敗したときだけそれを表示します。
     - -s オプションを使用すると、テスト実行中にprint()関数やstdout, stderrに書き込むその他の方法で生成された出力がリアルタイムでコンソールに表示されます。
-## Testing more functions
 ## Parametrize
+```python
+import pytest
+
+@pytest.mark.parametrize()
+def test_~~~():
+  ~~~
+  assert ~~~
+```
+- 同一テスト関数を異なる引数で複数回実行できる
+  - Codeceptionのデータプロバイダと同じ感じ
 ## Testing Classes
 ## Fixtures
 ## Combining Fixtures + Parametrize
