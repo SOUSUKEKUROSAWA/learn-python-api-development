@@ -1056,6 +1056,15 @@ ports:
               - Dockerfileでも`Dockerfile.dev`を作成して，`docker-compose -f docker-compose-dev.yml up --build`のように使用することもできる
                 - ただ，Dockerfileは基本亭なイメージの構造を定義するものであるので，環境ごとに大きく変わることが少なく，使い分けるメリットがあまりないためComposeファイルで使い分けるのが一般的
 ## Dockerhub
+- publicリポジトリを新規作成
+- `docker login`
+  - 自分のDockerhubのアカウントで認証を行う
+- `docker image tag <source image name> <target image name>`
+  - ローカルのイメージをパブリックのリポジトリ名に合わせる
+  - ex.｜`docker image tag learn-python-api-development-api sosukekurosawa/learn-python-api-development`
+    - `learn-python-api-development-api`という名前のローカルに存在するDockerイメージに`sosukekurosawa/learn-python-api-development`という新しいタグを付けます。
+- `docker push sosukekurosawa/learn-python-api-development`
+  - Dockerhubへのイメージをプッシュ
 ## Production vs Development
 # Section 16: Testing
 ## Testing Intro
