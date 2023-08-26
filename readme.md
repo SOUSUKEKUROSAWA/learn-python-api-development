@@ -1107,8 +1107,21 @@ ports:
   - 依存関係の管理
     - ローカルでビルドする場合、依存関係の解決が各サーバで行われるため、問題が発生する可能性が高まります。
 # Section 16: Testing
-## Testing Intro
 ## Writing your first test
+- `pip install pytest`
+  - https://docs.pytest.org/en/7.4.x/z
+- assertの挙動
+  - Trueの場合，何も起こらない
+  - Falseの場合，エラーがスローされる
+- `pytest`
+  - テストの実行
+- pytestがテスト用のファイルを検出する仕組み
+  - https://docs.pytest.org/en/7.4.x/explanation/goodpractices.html#conventions-for-python-test-discovery
+  - `test_*.py`または`*_test.py`というファイル名
+  - test_プレフィックスを持つ関数
+    - ex.｜`def test_example(): ...`
+  - Testプレフィックスを持ち、__init__メソッドを含まないクラス
+    - ex.|`class TestExample: ...`
 ## The -s & -v flags
 ## Testing more functions
 ## Parametrize
