@@ -1035,6 +1035,26 @@ ports:
 - コンテナ間の依存関係を定義して，コンテナの起動順序を定義する
   - ![](https://storage.googleapis.com/zenn-user-upload/a5f0038c3e1c-20230813.png)
 ## Bind Mounts
+- デフォルトではアプリケーションコードのコピーはコンテナ起動時にDockerfileが読み込まれてCOPYコマンドが実行された際にのみ実行される
+  - 開発環境ではアプリケーションコードが頻繁に変更されるのでその度にコンテナを再起動するのは面倒
+    - バインドマウントを利用する
+      - `./:/usr/src/app:ro`の意味
+        - ホストのカレントディレクトリ（`./`）をコンテナの`/usr/src/app`に同期させる．`ro`はread onlyの略で，コンテナはホストのコードに対して読み取りしか行えない用にする設定
+          - コンテナ側でコードを変更してもホストには同期されない
+- バインドマウントの設定をしたにもかかわらずコードの変更がリアルタイムで反映されない問題
+  - 状況
+    - Composeファイルにバインドマウントの設定を追加．コンテナ再起動したところ，コンテナ上のコードは確かにホストのコードと同期してリアルタイムに更新されることが確認できるにもかかわらず，/docsでAPIをたたいてみてもその変更が反映されていない．
+  - 原因
+    - Dockerfile内でuvicornコマンドにreloadオプションがついていなかったため
+      - デフォルトではuvicornはコードの変更を起動時にのみ読みこむ
+  - 解決策
+    - Dockerfileのuvicornコマンドにreloadオプションを追加して，`docker compose build`で再ビルド
+      - ただ，Dockerfileに本番環境では必要のないreloadオプションが残ってしまう
+        - 解決策
+          - コマンドの実行をComposeファイルで上書きする
+            - Composeファイルは環境ごとに作り分けることができる
+              - Dockerfileでも`Dockerfile.dev`を作成して，`docker-compose -f docker-compose-dev.yml up --build`のように使用することもできる
+                - ただ，Dockerfileは基本亭なイメージの構造を定義するものであるので，環境ごとに大きく変わることが少なく，使い分けるメリットがあまりないためComposeファイルで使い分けるのが一般的
 ## Dockerhub
 ## Production vs Development
 # Section 16: Testing
