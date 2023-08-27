@@ -1554,6 +1554,7 @@ def client():
 ```
 - ただ個々のテストは他のテストに依存すべきではない
 ## Test user fixture
+- テストユーザーの作成
 ## Test/validate token
 ## Conftest.py
 ## Failed login test

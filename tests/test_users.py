@@ -1,34 +1,17 @@
 import pytest
 from app import schemas
-from app.config import settings
-from app.database import get_db, Base
-from app.main import app
-from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from .database import client, session
 
-# SQLALCHEMY_DATABASE_URL = f"postgresql://{settings.db_user}:{settings.db_password}_test@{settings.db_host}_test/{settings.db_name}_test"
-SQLALCHEMY_DATABASE_URL = f"postgresql://{settings.db_user}:{settings.db_password}@{settings.db_host}/{settings.db_name}_test"
-
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
-
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-# Dependency
-def override_get_db():
-    db = TestingSessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-app.dependency_overrides[get_db] = override_get_db
-
-@pytest.fixture(scope="module")
-def client():
-    Base.metadata.create_all(bind=engine)
-    yield TestClient(app) # yieldの時点でテストが実行される=>テスト前後の処理を記述できるようになる
-    Base.metadata.drop_all(bind=engine)
+@pytest.fixture
+def test_user(client):
+    req_body = {
+        'email': 'user@example.com',
+        'password': 'string'
+    }
+    res = client.post("/users/", json=req_body)
+    user = res.json()
+    user['password'] = req_body['password']
+    return user
 
 def test_root(client):
     res = client.get("/")
@@ -47,10 +30,10 @@ def test_create_user(client):
     assert 201 == res.status_code
     assert expected_email == res_user.email
 
-def test_login_user(client):
+def test_login_user(client, test_user):
     res = client.post("/login", data={
-        "username": 'user@example.com',
-        "password": 'string'
+        "username": test_user['email'],
+        "password": test_user['password']
     })
     assert 200 == res.status_code
     assert res.json().get('access_token')
