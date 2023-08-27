@@ -1132,6 +1132,8 @@ ports:
     - デフォルトでは、テスト実行中のstdoutおよびstderrをキャプチャして、テストが失敗したときだけそれを表示します。
     - -s オプションを使用すると、テスト実行中にprint()関数やstdout, stderrに書き込むその他の方法で生成された出力がリアルタイムでコンソールに表示されます。
 ## Parametrize
+- 同一テスト関数を異なる引数で複数回実行できる
+  - Codeceptionのデータプロバイダと同じ感じ
 ```python
 import pytest
 
@@ -1140,11 +1142,18 @@ def test_~~~():
   ~~~
   assert ~~~
 ```
-- 同一テスト関数を異なる引数で複数回実行できる
-  - Codeceptionのデータプロバイダと同じ感じ
-## Testing Classes
 ## Fixtures
-## Combining Fixtures + Parametrize
+- 複数のテストに存在する繰り返し処理をまとめる機能
+```python
+import pytest
+
+@pytest.fixture()
+def set_db_connection():
+  ~~~
+
+def test_~~~(set_db_connection):
+  assert ~~~
+```
 ## Testing Exceptions
 ## FastAPI TestClient
 ## Pytest flags
