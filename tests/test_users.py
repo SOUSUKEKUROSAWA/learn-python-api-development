@@ -24,7 +24,7 @@ def override_get_db():
 
 app.dependency_overrides[get_db] = override_get_db
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def client():
     Base.metadata.create_all(bind=engine)
     yield TestClient(app) # yieldの時点でテストが実行される=>テスト前後の処理を記述できるようになる
@@ -46,3 +46,12 @@ def test_create_user(client):
     res_user = schemas.UserResponse(**res.json())
     assert 201 == res.status_code
     assert expected_email == res_user.email
+
+def test_login_user(client):
+    res = client.post("/login", data={
+        "username": 'user@example.com',
+        "password": 'string'
+    })
+    assert 200 == res.status_code
+    assert res.json().get('access_token')
+    assert res.json().get('token_type')

@@ -1542,6 +1542,17 @@ FAILED tests/test_users.py::test_create_user - sqlalchemy.exc.OperationalError: 
 - `/users`にアクセスすると，`/users/`にリダイレクトする仕組みになってる
   - 実際にアプリケーションを使用する場合は気にする必要がないが，テストを行う場合は`/users`にリクエストを送るとステータスコードは`307 Temporary Redirect`となるので注意
 ## Fixture scope
+- https://docs.pytest.org/en/6.2.x/fixture.html#fixture-scopes
+- fixtureのスコープは関数単位
+  - 関数のライフサイクルと同じ
+    - ログインのテストを実行する際はログインユーザーの作成も行わなければいけない
+- オプションでスコープを変更することも可能
+```python
+@pytest.fixture(scope="module")
+def client():
+  ~~~
+```
+- ただ個々のテストは他のテストに依存すべきではない
 ## Test user fixture
 ## Test/validate token
 ## Conftest.py
