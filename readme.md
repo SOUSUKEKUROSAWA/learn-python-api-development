@@ -1166,6 +1166,9 @@ def test_~~~(bank_account):
     bank_account.withdraw(200)
 ```
 ## FastAPI TestClient
+- https://fastapi.tiangolo.com/ja/tutorial/testing/#testclient
+- テスト用のHTTPクライアント
+  - 基本的には、リアルのHTTPクライアントと同様に動作しますが、実際にはネットワークを経由せずに内部で直接アプリケーションと通信します。これにより、テストの速度が早く、デバッグも容易になります。
 ## Pytest flags
 ## Test create user
 ## Setup testing database
