@@ -1170,6 +1170,11 @@ def test_~~~(bank_account):
 - テスト用のHTTPクライアント
   - 基本的には、リアルのHTTPクライアントと同様に動作しますが、実際にはネットワークを経由せずに内部で直接アプリケーションと通信します。これにより、テストの速度が早く、デバッグも容易になります。
 ## Pytest flags
+- `pytest --disable-warnings`
+  - テスト実行時に表示されるすべての警告を非表示にする
+- `pytest --exitfirst`
+  - 最初に失敗したテスト（エラーや失敗が発生したテスト）でテスト実行が停止する
+    - テストでは失敗したものを上から順に直していくのが効率的
 ## Test create user
 ## Setup testing database
 ## Create & destroy database after each test
