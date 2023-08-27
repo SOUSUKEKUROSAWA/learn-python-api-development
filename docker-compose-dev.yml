@@ -4,6 +4,7 @@ services:
     build: .
     depends_on:
       - postgres
+      # - postgres_test
     ports:
       - "8000:8000"
     volumes:
@@ -18,5 +19,13 @@ services:
       - POSTGRES_DB=learn-python-api-development
     volumes:
       - postgres-db:/var/lib/postgresql/data
+  # postgres_test:
+  #   image: postgres
+  #   environment:
+  #     - POSTGRES_PASSWORD=Souhal0517_test
+  #     - POSTGRES_DB=learn-python-api-development_test
+  #   volumes:
+  #     - postgres-test-db:/var/lib/postgresql/data
 volumes:
   postgres-db:
+  # postgres-test-db:

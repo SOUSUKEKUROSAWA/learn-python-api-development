@@ -1527,9 +1527,17 @@ FAILED tests/test_users.py::test_create_user - sqlalchemy.exc.OperationalError: 
 ======================================= 1 failed, 1 passed in 7.30s ======================================== 
 ```
   - 原因
+    - テストがローカルマシン上（Not Dockerコンテナ上）で実行されていたため，postgresというDB_HOST名を解決できなかったこと
   - 解決策
+    - .envファイルのDB_HOSTの値を`postgres`から`localhost:5432`に変更する
+      - ローカルのDBに接続させるようにした
+      - ただ，これだとローカルのDBに接続しているので，できればDocker化したい
+        - テスト用DBのコンテナを作成する
 ## Setup testing database
-## Create & destroy database after each test
+- テスト用の分離されたデータベースの作成
+- get_dbをオーバーライドする
+  - https://fastapi.tiangolo.com/advanced/testing-dependencies/
+  - https://fastapi.tiangolo.com/advanced/testing-database/
 ## More Fixtures to handle database interaction
 ## Trailing slashes in path
 ## Fixture scope
