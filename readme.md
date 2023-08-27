@@ -1538,8 +1538,9 @@ FAILED tests/test_users.py::test_create_user - sqlalchemy.exc.OperationalError: 
 - get_dbをオーバーライドする
   - https://fastapi.tiangolo.com/advanced/testing-dependencies/
   - https://fastapi.tiangolo.com/advanced/testing-database/
-## More Fixtures to handle database interaction
 ## Trailing slashes in path
+- `/users`にアクセスすると，`/users/`にリダイレクトする仕組みになってる
+  - 実際にアプリケーションを使用する場合は気にする必要がないが，テストを行う場合は`/users`にリクエストを送るとステータスコードは`307 Temporary Redirect`となるので注意
 ## Fixture scope
 ## Test user fixture
 ## Test/validate token
