@@ -1176,6 +1176,358 @@ def test_~~~(bank_account):
   - 最初に失敗したテスト（エラーや失敗が発生したテスト）でテスト実行が停止する
     - テストでは失敗したものを上から順に直していくのが効率的
 ## Test create user
+- テスト実行時にDB接続エラーが発生する問題
+  - 状況
+    - `pytest -v -s`でテストを実行
+    - エラーが発生
+      - pgAdmin
+        - 接続できない状態
+      - /docsからのAPI呼び出し
+        - 正常に動作する
+          - DBへのアクセスもできているよう
+      - ボリューム削除しても変わらずエラー発生
+```python
+(venv) PS C:\Users\kuros\Documents\learn-python-api-development> pytest -v -s                                
+=========================================== test session starts ============================================
+platform win32 -- Python 3.9.13, pytest-7.4.0, pluggy-1.2.0 -- C:\Users\kuros\Documents\learn-python-api-development\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\kuros\Documents\learn-python-api-development
+plugins: anyio-3.7.0
+collected 2 items
+
+tests/test_users.py::test_root PASSED
+tests/test_users.py::test_create_user FAILED
+
+================================================= FAILURES =================================================
+_____________________________________________ test_create_user _____________________________________________
+
+self = <sqlalchemy.engine.base.Connection object at 0x00000180753B0E20>
+engine = Engine(postgresql://postgres:***@postgres/learn-python-api-development), connection = None
+_has_events = None, _allow_revalidate = True, _allow_autobegin = True
+
+    def __init__(
+        self,
+        engine: Engine,
+        connection: Optional[PoolProxiedConnection] = None,
+        _has_events: Optional[bool] = None,
+        _allow_revalidate: bool = True,
+        _allow_autobegin: bool = True,
+    ):
+        """Construct a new Connection."""
+        self.engine = engine
+        self.dialect = dialect = engine.dialect
+    
+        if connection is None:
+            try:
+>               self._dbapi_connection = engine.raw_connection()
+
+venv\lib\site-packages\sqlalchemy\engine\base.py:145: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+venv\lib\site-packages\sqlalchemy\engine\base.py:3293: in raw_connection
+    return self.pool.connect()
+venv\lib\site-packages\sqlalchemy\pool\base.py:452: in connect
+    return _ConnectionFairy._checkout(self)
+venv\lib\site-packages\sqlalchemy\pool\base.py:1268: in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+venv\lib\site-packages\sqlalchemy\pool\base.py:716: in checkout
+    rec = pool._do_get()
+venv\lib\site-packages\sqlalchemy\pool\impl.py:169: in _do_get
+    self._dec_overflow()
+venv\lib\site-packages\sqlalchemy\util\langhelpers.py:147: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv\lib\site-packages\sqlalchemy\pool\impl.py:166: in _do_get
+    return self._create_connection()
+venv\lib\site-packages\sqlalchemy\pool\base.py:393: in _create_connection
+    return _ConnectionRecord(self)
+venv\lib\site-packages\sqlalchemy\pool\base.py:678: in __init__
+    self.__connect()
+venv\lib\site-packages\sqlalchemy\pool\base.py:903: in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+venv\lib\site-packages\sqlalchemy\util\langhelpers.py:147: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv\lib\site-packages\sqlalchemy\pool\base.py:898: in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+venv\lib\site-packages\sqlalchemy\engine\create.py:637: in connect
+    return dialect.connect(*cargs, **cparams)
+venv\lib\site-packages\sqlalchemy\engine\default.py:616: in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  
+
+dsn = 'host=postgres dbname=learn-python-api-development user=postgres password=Souhal0517'
+connection_factory = None, cursor_factory = None
+kwargs = {'dbname': 'learn-python-api-development', 'host': 'postgres', 'password': 'Souhal0517', 'user': 'postgres'}
+kwasync = {}
+
+    def connect(dsn=None, connection_factory=None, cursor_factory=None, **kwargs):
+        """
+        Create a new database connection.
+
+        The connection parameters can be specified as a string:
+
+            conn = psycopg2.connect("dbname=test user=postgres password=secret")
+
+        or using a set of keyword arguments:
+
+            conn = psycopg2.connect(database="test", user="postgres", password="secret")
+
+        Or as a mix of both. The basic connection parameters are:
+
+        - *dbname*: the database name
+        - *database*: the database name (only as keyword argument)
+        - *user*: user name used to authenticate
+        - *password*: password used to authenticate
+        - *host*: database host address (defaults to UNIX socket if not provided)
+        - *port*: connection port number (defaults to 5432 if not provided)
+
+        Using the *connection_factory* parameter a different class or connections
+        factory can be specified. It should be a callable object taking a dsn
+        argument.
+
+        Using the *cursor_factory* parameter, a new default cursor factory will be
+        used by cursor().
+
+        Using *async*=True an asynchronous connection will be created. *async_* is
+        a valid alias (for Python versions where ``async`` is a keyword).
+
+        Any other keyword parameter will be passed to the underlying client
+        library: the list of supported parameters depends on the library version.
+
+        """
+        kwasync = {}
+        if 'async' in kwargs:
+            kwasync['async'] = kwargs.pop('async')
+        if 'async_' in kwargs:
+            kwasync['async_'] = kwargs.pop('async_')
+
+        dsn = _ext.make_dsn(dsn, **kwargs)
+>       conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+E       psycopg2.OperationalError: could not translate host name "postgres" to address: Unknown host
+
+venv\lib\site-packages\psycopg2\__init__.py:122: OperationalError
+
+The above exception was the direct cause of the following exception:
+
+    def test_create_user():
+>       res = client.post("/users/", json={
+            "email": "user@example.com",
+            "password": "string"
+        })
+
+tests\test_users.py:13:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  
+venv\lib\site-packages\starlette\testclient.py:590: in post
+    return super().post(
+venv\lib\site-packages\httpx\_client.py:1132: in post
+    return self.request(
+venv\lib\site-packages\starlette\testclient.py:465: in request
+    return super().request(
+venv\lib\site-packages\httpx\_client.py:814: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+venv\lib\site-packages\httpx\_client.py:901: in send
+    response = self._send_handling_auth(
+venv\lib\site-packages\httpx\_client.py:929: in _send_handling_auth
+    response = self._send_handling_redirects(
+venv\lib\site-packages\httpx\_client.py:966: in _send_handling_redirects
+    response = self._send_single_request(request)
+venv\lib\site-packages\httpx\_client.py:1002: in _send_single_request
+    response = transport.handle_request(request)
+venv\lib\site-packages\starlette\testclient.py:342: in handle_request
+    raise exc
+venv\lib\site-packages\starlette\testclient.py:339: in handle_request
+    portal.call(self.app, scope, receive, send)
+venv\lib\site-packages\anyio\from_thread.py:277: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+..\..\AppData\Local\Programs\Python\Python39\lib\concurrent\futures\_base.py:446: in result
+    return self.__get_result()
+..\..\AppData\Local\Programs\Python\Python39\lib\concurrent\futures\_base.py:391: in __get_result
+    raise self._exception
+venv\lib\site-packages\anyio\from_thread.py:217: in _call_func
+    retval = await retval
+venv\lib\site-packages\fastapi\applications.py:276: in __call__
+    await super().__call__(scope, receive, send)
+venv\lib\site-packages\starlette\applications.py:122: in __call__
+    await self.middleware_stack(scope, receive, send)
+venv\lib\site-packages\starlette\middleware\errors.py:184: in __call__
+    raise exc
+venv\lib\site-packages\starlette\middleware\errors.py:162: in __call__
+    await self.app(scope, receive, _send)
+venv\lib\site-packages\starlette\middleware\cors.py:83: in __call__
+    await self.app(scope, receive, send)
+venv\lib\site-packages\starlette\middleware\exceptions.py:79: in __call__
+    raise exc
+venv\lib\site-packages\starlette\middleware\exceptions.py:68: in __call__
+    await self.app(scope, receive, sender)
+venv\lib\site-packages\fastapi\middleware\asyncexitstack.py:21: in __call__
+    raise e
+venv\lib\site-packages\fastapi\middleware\asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+venv\lib\site-packages\starlette\routing.py:718: in __call__
+    await route.handle(scope, receive, send)
+venv\lib\site-packages\starlette\routing.py:276: in handle
+    await self.app(scope, receive, send)
+venv\lib\site-packages\starlette\routing.py:66: in app
+    response = await func(request)
+venv\lib\site-packages\fastapi\routing.py:237: in app
+    raw_response = await run_endpoint_function(
+venv\lib\site-packages\fastapi\routing.py:165: in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+venv\lib\site-packages\starlette\concurrency.py:41: in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+venv\lib\site-packages\anyio\to_thread.py:33: in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(
+venv\lib\site-packages\anyio\_backends\_asyncio.py:877: in run_sync_in_worker_thread
+    return await future
+venv\lib\site-packages\anyio\_backends\_asyncio.py:807: in run
+    result = context.run(func, *args)
+app\routers\user.py:34: in create_user
+    db.commit()
+venv\lib\site-packages\sqlalchemy\orm\session.py:1906: in commit
+    trans.commit(_to_root=True)
+<string>:2: in commit
+    ???
+venv\lib\site-packages\sqlalchemy\orm\state_changes.py:137: in _go
+    ret_value = fn(self, *arg, **kw)
+venv\lib\site-packages\sqlalchemy\orm\session.py:1221: in commit
+    self._prepare_impl()
+<string>:2: in _prepare_impl
+    ???
+venv\lib\site-packages\sqlalchemy\orm\state_changes.py:137: in _go
+    ret_value = fn(self, *arg, **kw)
+venv\lib\site-packages\sqlalchemy\orm\session.py:1196: in _prepare_impl
+    self.session.flush()
+venv\lib\site-packages\sqlalchemy\orm\session.py:4154: in flush
+    self._flush(objects)
+venv\lib\site-packages\sqlalchemy\orm\session.py:4291: in _flush
+    transaction.rollback(_capture_exception=True)
+venv\lib\site-packages\sqlalchemy\util\langhelpers.py:147: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv\lib\site-packages\sqlalchemy\orm\session.py:4251: in _flush
+    flush_context.execute()
+venv\lib\site-packages\sqlalchemy\orm\unitofwork.py:467: in execute
+    rec.execute(self)
+venv\lib\site-packages\sqlalchemy\orm\unitofwork.py:644: in execute
+    util.preloaded.orm_persistence.save_obj(
+venv\lib\site-packages\sqlalchemy\orm\persistence.py:60: in save_obj
+    for (
+venv\lib\site-packages\sqlalchemy\orm\persistence.py:221: in _organize_states_for_save
+    for state, dict_, mapper, connection in _connections_for_states(
+venv\lib\site-packages\sqlalchemy\orm\persistence.py:1726: in _connections_for_states
+    connection = uowtransaction.transaction.connection(base_mapper)
+<string>:2: in connection
+    ???
+venv\lib\site-packages\sqlalchemy\orm\state_changes.py:137: in _go
+    ret_value = fn(self, *arg, **kw)
+venv\lib\site-packages\sqlalchemy\orm\session.py:966: in connection
+    return self._connection_for_bind(bind, execution_options)
+<string>:2: in _connection_for_bind
+    ???
+venv\lib\site-packages\sqlalchemy\orm\state_changes.py:137: in _go
+    ret_value = fn(self, *arg, **kw)
+venv\lib\site-packages\sqlalchemy\orm\session.py:1099: in _connection_for_bind
+    conn = self._parent._connection_for_bind(bind, execution_options)
+<string>:2: in _connection_for_bind
+    ???
+venv\lib\site-packages\sqlalchemy\orm\state_changes.py:137: in _go
+    ret_value = fn(self, *arg, **kw)
+venv\lib\site-packages\sqlalchemy\orm\session.py:1111: in _connection_for_bind
+    conn = bind.connect()
+venv\lib\site-packages\sqlalchemy\engine\base.py:3269: in connect
+    return self._connection_cls(self)
+venv\lib\site-packages\sqlalchemy\engine\base.py:147: in __init__
+    Connection._handle_dbapi_exception_noconnection(
+venv\lib\site-packages\sqlalchemy\engine\base.py:2431: in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+venv\lib\site-packages\sqlalchemy\engine\base.py:145: in __init__
+    self._dbapi_connection = engine.raw_connection()
+venv\lib\site-packages\sqlalchemy\engine\base.py:3293: in raw_connection
+    return self.pool.connect()
+venv\lib\site-packages\sqlalchemy\pool\base.py:452: in connect
+    return _ConnectionFairy._checkout(self)
+venv\lib\site-packages\sqlalchemy\pool\base.py:1268: in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+venv\lib\site-packages\sqlalchemy\pool\base.py:716: in checkout
+    rec = pool._do_get()
+venv\lib\site-packages\sqlalchemy\pool\impl.py:169: in _do_get
+    self._dec_overflow()
+venv\lib\site-packages\sqlalchemy\util\langhelpers.py:147: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv\lib\site-packages\sqlalchemy\pool\impl.py:166: in _do_get
+    return self._create_connection()
+venv\lib\site-packages\sqlalchemy\pool\base.py:393: in _create_connection
+    return _ConnectionRecord(self)
+venv\lib\site-packages\sqlalchemy\pool\base.py:678: in __init__
+    self.__connect()
+venv\lib\site-packages\sqlalchemy\pool\base.py:903: in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+venv\lib\site-packages\sqlalchemy\util\langhelpers.py:147: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+venv\lib\site-packages\sqlalchemy\pool\base.py:898: in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+venv\lib\site-packages\sqlalchemy\engine\create.py:637: in connect
+    return dialect.connect(*cargs, **cparams)
+venv\lib\site-packages\sqlalchemy\engine\default.py:616: in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _  
+
+dsn = 'host=postgres dbname=learn-python-api-development user=postgres password=Souhal0517'
+connection_factory = None, cursor_factory = None
+kwargs = {'dbname': 'learn-python-api-development', 'host': 'postgres', 'password': 'Souhal0517', 'user': 'postgres'}
+kwasync = {}
+
+    def connect(dsn=None, connection_factory=None, cursor_factory=None, **kwargs):
+        """
+        Create a new database connection.
+
+        The connection parameters can be specified as a string:
+
+            conn = psycopg2.connect("dbname=test user=postgres password=secret")
+
+        or using a set of keyword arguments:
+
+            conn = psycopg2.connect(database="test", user="postgres", password="secret")
+
+        Or as a mix of both. The basic connection parameters are:
+
+        - *dbname*: the database name
+        - *database*: the database name (only as keyword argument)
+        - *user*: user name used to authenticate
+        - *password*: password used to authenticate
+        - *host*: database host address (defaults to UNIX socket if not provided)
+        - *port*: connection port number (defaults to 5432 if not provided)
+
+        Using the *connection_factory* parameter a different class or connections
+        factory can be specified. It should be a callable object taking a dsn
+        argument.
+
+        Using the *cursor_factory* parameter, a new default cursor factory will be
+        used by cursor().
+
+        Using *async*=True an asynchronous connection will be created. *async_* is
+        a valid alias (for Python versions where ``async`` is a keyword).
+
+        Any other keyword parameter will be passed to the underlying client
+        library: the list of supported parameters depends on the library version.
+
+        """
+        kwasync = {}
+        if 'async' in kwargs:
+            kwasync['async'] = kwargs.pop('async')
+        if 'async_' in kwargs:
+            kwasync['async_'] = kwargs.pop('async_')
+
+        dsn = _ext.make_dsn(dsn, **kwargs)
+>       conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+E       sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) could not translate host name "postgres" to address: Unknown host
+E       
+E       (Background on this error at: https://sqlalche.me/e/20/e3q8)
+
+venv\lib\site-packages\psycopg2\__init__.py:122: OperationalError
+========================================= short test summary info ========================================== 
+FAILED tests/test_users.py::test_create_user - sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) could not translate host name "postgres" to...
+======================================= 1 failed, 1 passed in 7.30s ======================================== 
+```
+  - 原因
+  - 解決策
 ## Setup testing database
 ## Create & destroy database after each test
 ## More Fixtures to handle database interaction
