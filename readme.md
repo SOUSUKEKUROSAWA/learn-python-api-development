@@ -1155,6 +1155,16 @@ def test_~~~(set_db_connection):
   assert ~~~
 ```
 ## Testing Exceptions
+- エラーが発生する可能性のある箇所（外部依存やDBアクセスがある場合など）では例外をスローするように設定しておく
+  - **例外をスローすることでテスト自体は中止せずに進められる**
+  - エラーハンドリングがないと，単にテストが失敗する
+```python
+import pytest
+
+def test_~~~(bank_account):
+  with pytest.raises(Exception):
+    bank_account.withdraw(200)
+```
 ## FastAPI TestClient
 ## Pytest flags
 ## Test create user
