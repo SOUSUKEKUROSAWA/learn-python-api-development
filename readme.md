@@ -1556,6 +1556,7 @@ def client():
 ## Test user fixture
 - テストユーザーの作成
 ## Test/validate token
+- Tokenをでコードして，ユーザーIDを検証する
 ## Conftest.py
 ## Failed login test
 ## Get all posts test
