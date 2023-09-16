@@ -1558,6 +1558,7 @@ def client():
 ## Test/validate token
 - Tokenをでコードして，ユーザーIDを検証する
 ## Conftest.py
+- このファイルで定義したfixtureはすべてのテストに適用される
 ## Failed login test
 ## Get all posts test
 ## Posts fixture to create test posts
@@ -1569,7 +1570,10 @@ def client():
 ## Voting tests
 # Section 17: CI/CD pipeline
 ## CI/CD intro
+- ![](https://storage.googleapis.com/zenn-user-upload/9cbd84441a07-20230916.png)
 ## Github Actions
+- GitHub Actionsはリポジトリに標準装備されているのでパッケージをインストールしたりする必要がない
+- 無料
 ## Creating Jobs
 ## Setup python/dependencies/pytest
 ## Environment variables

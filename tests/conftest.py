@@ -32,3 +32,14 @@ def client(session):
             session.close()
     app.dependency_overrides[get_db] = override_get_db
     yield TestClient(app)
+
+@pytest.fixture
+def test_user(client):
+    req_body = {
+        'email': 'user@example.com',
+        'password': 'string'
+    }
+    res = client.post('/users/', json=req_body)
+    user = res.json()
+    user['password'] = req_body['password']
+    return user

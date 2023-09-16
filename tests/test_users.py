@@ -1,19 +1,6 @@
-import pytest
 from app import schemas
 from app.config import settings
 from jose import jwt
-from .database import client, session
-
-@pytest.fixture
-def test_user(client):
-    req_body = {
-        'email': 'user@example.com',
-        'password': 'string'
-    }
-    res = client.post('/users/', json=req_body)
-    user = res.json()
-    user['password'] = req_body['password']
-    return user
 
 def test_root(client):
     res = client.get('/')
@@ -37,14 +24,17 @@ def test_create_user(client):
     assert expected_email == res_user.email
 
 def test_login_user(client, test_user):
+    # get response as JSON
     res = client.post('/login', data={
         'username': test_user['email'],
         'password': test_user['password']
     })
+    # desserialize JSON into schemas.Token object
     res_token = schemas.Token(**res.json())
 
     payload = jwt.decode(res_token.access_token, settings.secret_key, algorithms=[settings.algorithm])
     id = payload.get('user_id')
+
     assert 200 == res.status_code
     assert test_user['id'] == id
-    assert res_token.token_type == 'bearer'
+    assert 'bearer' == res_token.token_type
